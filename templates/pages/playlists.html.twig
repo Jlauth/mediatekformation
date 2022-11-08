@@ -20,7 +20,7 @@
                 <th class="text-left align-top" scope="col">
                     catégories
                     <form class="form-inline mt-1" method="POST" action="{{ path('playlists.findallcontain', {champ:'id', table:'categories'}) }}">
-                        <select class="form-select form-select-sm" name="recherche" id="recherche" onchange="this.form.submit()">
+                        <select class="form-select form-select-sm" name="recherche" id="recherche" onchange="this.form.submit();">
                             <option value=""></option>
                             {% for categorie in categories %}
                                 <option 

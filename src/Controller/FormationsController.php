@@ -59,7 +59,11 @@ class FormationsController extends AbstractController {
      * @return Response
      */
     public function sort($champ, $ordre, $table=""): Response{
-        $formations = $this->formationRepository->findAllOrderBy($champ, $ordre, $table);
+        if($table!=""){
+           $formations = $this->formationRepository->findAllOrderBy($champ, $ordre, $table);
+        }else{
+            $formations = $this->formationRepository->findAllOrderByTableEmpty($champ, $ordre, $table="");
+        }
         $categories = $this->categorieRepository->findAll();
         return $this->render($this->pagesFormations, [
             'formations' => $formations,
@@ -76,7 +80,11 @@ class FormationsController extends AbstractController {
      */
     public function findAllContain($champ, Request $request, $table=""): Response{
         $valeur = $request->get("recherche");
-        $formations = $this->formationRepository->findByContainValue($champ, $valeur, $table);
+        if($table != ""){
+            $formations = $this->formationRepository->findByContainValue($champ, $valeur, $table); 
+        }else{
+            $formations = $this->formationRepository->findByContainValueTableEmpty($champ, $valeur, $table="");
+        }
         $categories = $this->categorieRepository->findAll();
         return $this->render($this->pagesFormations, [
             'formations' => $formations,
@@ -99,5 +107,3 @@ class FormationsController extends AbstractController {
     }   
     
 }
-
-test
