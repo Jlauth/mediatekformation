@@ -11,9 +11,8 @@
         En cliquant sur la capture, vous accèderez à la présentation plus détaillée de la formation ainsi que la vidéo correspondante.<BR />
         Vous pouvez aussi retrouver les vidéos regroupées dans des playlists, dans la partie <strong><a href="{{ path('playlists') }}" class="link-info">Playlists</a></strong>.
     </p>
-    <p>
-        Voici les <strong>deux dernières formations</strong> ajoutées au catalogue :
-        <table class="table">
+    <p id='deuxdernièresformations'> Voici les <strong>deux dernières formations</strong> ajoutées au catalogue :</p>
+        <table class="table" aria-label='deuxdernièresformations'>
             <tr>
                 {% for formation in formations %}
                     <td>
@@ -23,7 +22,7 @@
                                 {% if formation.picture %}
                                     <a href="{{ path('formations.showone', {id:formation.id}) }}">
                                     <img src="{{ formation.picture }}" 
-                                         class="card-img-top" style="width:100%;height:auto;">
+                                         class="card-img-top" style="width:100%;height:auto;" alt="Image des deux dernières formations">
                                     </a>    
                                 {% endif %}
                             </div>
@@ -41,9 +40,7 @@
                         </div>                    
                 {% endfor %}    
             </tr>
-
-        </table>        
-    </p>
+        </table> 
 {% endblock %}
 
 

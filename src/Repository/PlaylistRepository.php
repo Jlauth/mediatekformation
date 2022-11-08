@@ -16,6 +16,15 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PlaylistRepository extends ServiceEntityRepository
 {
+    // Propriétés privées de la classe PlayListRepository
+    private $id = 'p.id id';
+    private $name = 'p.name name';
+    private $nameCategory = 'c.name categoriename';
+    private $formations = 'p.formations';
+    private $categories = 'f.categories';
+    private $nameCategories = 'c.name';
+    
+    
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Playlist::class);
@@ -47,15 +56,15 @@ class PlaylistRepository extends ServiceEntityRepository
      */
     public function findAllOrderBy($champ, $ordre): array{
         return $this->createQueryBuilder('p')
-                ->select('p.id id')
-                ->addSelect('p.name name')
-                ->addSelect('c.name categoriename')
-                ->leftjoin('p.formations', 'f')
-                ->leftjoin('f.categories', 'c')
+                ->select($this->id)
+                ->addSelect($this->name)
+                ->addSelect($this->nameCategory)
+                ->leftjoin($this->formations, 'f')
+                ->leftjoin($this->categories, 'c')
                 ->groupBy('p.id')
-                ->addGroupBy('c.name')
+                ->addGroupBy($this->nameCategories)
                 ->orderBy('p.'.$champ, $ordre)
-                ->addOrderBy('c.name')
+                ->addOrderBy($this->nameCategories)
                 ->getQuery()
                 ->getResult();       
     }
@@ -74,32 +83,32 @@ class PlaylistRepository extends ServiceEntityRepository
         }    
         if($table==""){      
             return $this->createQueryBuilder('p')
-                    ->select('p.id id')
-                    ->addSelect('p.name name')
-                    ->addSelect('c.name categoriename')
-                    ->leftjoin('p.formations', 'f')
-                    ->leftjoin('f.categories', 'c')
+                    ->select($this->id)
+                    ->addSelect($this->name)
+                    ->addSelect($this->nameCategory)
+                    ->leftjoin($this->formations, 'f')
+                    ->leftjoin($this->categories, 'c')
                     ->where('p.'.$champ.' LIKE :valeur')
                     ->setParameter('valeur', '%'.$valeur.'%')
                     ->groupBy('p.id')
-                    ->addGroupBy('c.name')
+                    ->addGroupBy($this->nameCategories)
                     ->orderBy('p.name', 'ASC')
-                    ->addOrderBy('c.name')
+                    ->addOrderBy($this->nameCategories)
                     ->getQuery()
                     ->getResult();              
         }else{   
             return $this->createQueryBuilder('p')
-                    ->select('p.id id')
-                    ->addSelect('p.name name')
-                    ->addSelect('c.name categoriename')
-                    ->leftjoin('p.formations', 'f')
-                    ->leftjoin('f.categories', 'c')
+                    ->select($this->id)
+                    ->addSelect($this->name)
+                    ->addSelect($this->nameCategory)
+                    ->leftjoin($this->formations, 'f')
+                    ->leftjoin($this->categories, 'c')
                     ->where('c.'.$champ.' LIKE :valeur')
                     ->setParameter('valeur', '%'.$valeur.'%')
                     ->groupBy('p.id')
-                    ->addGroupBy('c.name')
+                    ->addGroupBy($this->nameCategories)
                     ->orderBy('p.name', 'ASC')
-                    ->addOrderBy('c.name')
+                    ->addOrderBy($this->nameCategories)
                     ->getQuery()
                     ->getResult();              
             
