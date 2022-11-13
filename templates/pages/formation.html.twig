@@ -19,14 +19,14 @@
         </div>
         <div class="col">
             {{ formation.publishedatstring }}
-            <h4 class="text-info mt-5">{{ formation.title }}</h4>
-            <strong>playlist : </strong>{{ formation.playlist.name }}<br />
-            <strong>catégories : </strong>
+            <h4 class="text-info mt-5">{{ formation.title }}</h4><br/>
+            <strong>Playlist : </strong>{{ formation.playlist.name }}<br /><br/>
+            <strong>Catégories : </strong>
                 {% for categorie in formation.categories %}
                     {{ categorie.name }}&nbsp;
                 {% endfor %}
             <br /><br />
-            <strong>description :</strong><br />
+            <strong>Description :</strong><br />
                 {{ formation.description|nl2br }}
         </div>
     </div>
