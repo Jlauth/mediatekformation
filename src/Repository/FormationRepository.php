@@ -65,7 +65,7 @@ class FormationRepository extends ServiceEntityRepository
      * @param type $table si $champ dans une autre table
      * @return Formation[]
      */
-    public function findAllOrderByTableEmpty($champ, $ordre): array{
+    public function findAllOrderByEmpty($champ, $ordre): array{
         return $this->createQueryBuilder('f')
                 ->orderBy('f.'.$champ, $ordre)
                 ->getQuery()
@@ -95,7 +95,7 @@ class FormationRepository extends ServiceEntityRepository
      * @param type $table si $champ dans une autre table
      * @return Formation[]
      */
-    public function findByContainValueTableEmpty($champ, $valeur): array{
+    public function findByContainValueEmpty($champ, $valeur): array{
         if($valeur=="") {
             return $this->findAll();
         }
@@ -158,5 +158,5 @@ class FormationRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();        
     }
-    
+
 }
