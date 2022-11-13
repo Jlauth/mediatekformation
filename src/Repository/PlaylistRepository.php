@@ -19,10 +19,14 @@ class PlaylistRepository extends ServiceEntityRepository
     // Propriétés privées de la classe PlayListRepository
     private $id = 'p.id id';
     private $name = 'p.name name';
+    private $idPlaylist = 'p.id';
+    private $namePlaylist = 'p.name';
     private $nameCategory = 'c.name categoriename';
+    private $nbFormations = 'count(f.title) nb';
     private $formations = 'p.formations';
     private $categories = 'f.categories';
     private $nameCategories = 'c.name';
+    
     
     
     public function __construct(ManagerRegistry $registry)
@@ -47,7 +51,7 @@ class PlaylistRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    
+
     /**
      * Retourne toutes les playlists triées sur un champ
      * @param type $champ
@@ -59,14 +63,35 @@ class PlaylistRepository extends ServiceEntityRepository
                 ->select($this->id)
                 ->addSelect($this->name)
                 ->addSelect($this->nameCategory)
+                ->addSelect($this->nbFormations)
                 ->leftjoin($this->formations, 'f')
                 ->leftjoin($this->categories, 'c')
-                ->groupBy('p.id')
+                ->groupBy($this->idPlaylist)
                 ->addGroupBy($this->nameCategories)
                 ->orderBy('p.'.$champ, $ordre)
                 ->addOrderBy($this->nameCategories)
                 ->getQuery()
                 ->getResult();       
+    }
+    
+    /**
+     * Tri sur le champ résultat du count
+     * @param type $ordre
+     * @return Playlist[]
+     */
+    public function findAllOrderByNbFormations($ordre): array{
+        return $this->createQueryBuilder('p')
+            ->select($this->id)
+            ->addSelect($this->name)
+            ->addSelect($this->nbFormations)
+            ->addSelect($this->nameCategory)
+            ->leftjoin($this->formations, 'f')
+            ->leftjoin($this->categories, 'c')
+            ->groupBy($this->namePlaylist)
+            ->addGroupBy($this->nameCategories)
+            ->orderBy('nb', $ordre)
+            ->getQuery()
+            ->getResult();     
     }
 
     /**
@@ -77,7 +102,7 @@ class PlaylistRepository extends ServiceEntityRepository
      * @param type $table si $champ dans une autre table
      * @return Playlist[]
      */
-    public function findByContainValueEmpty($champ, $valeur, $table=""): array{
+    public function findByContainValueEmpty($champ, $valeur): array{
         if($valeur==""){
             return $this->findAllOrderBy('name', 'ASC');
         }
@@ -85,13 +110,14 @@ class PlaylistRepository extends ServiceEntityRepository
                 ->select($this->id)
                 ->addSelect($this->name)
                 ->addSelect($this->nameCategory)
+                ->addSelect($this->nbFormations)
                 ->leftjoin($this->formations, 'f')
                 ->leftjoin($this->categories, 'c')
                 ->where('p.'.$champ.' LIKE :valeur')
                 ->setParameter('valeur', '%'.$valeur.'%')
-                ->groupBy('p.id')
+                ->groupBy($this->idPlaylist)
                 ->addGroupBy($this->nameCategories)
-                ->orderBy('p.name', 'ASC')
+                ->orderBy($this->namePlaylist, 'ASC')
                 ->addOrderBy($this->nameCategories)
                 ->getQuery()
                 ->getResult();    
@@ -105,7 +131,7 @@ class PlaylistRepository extends ServiceEntityRepository
      * @param type $table
      * @return Playlist[]
      */
-    public function findByContainValue($champ, $valeur, $table): array {
+    public function findByContainValue($champ, $valeur): array {
         if($valeur==""){
             return $this->findAllOrderBy('name', 'ASC');
         }  
@@ -113,17 +139,18 @@ class PlaylistRepository extends ServiceEntityRepository
                 ->select($this->id)
                 ->addSelect($this->name)
                 ->addSelect($this->nameCategory)
+                ->addSelect($this->nbFormations)
                 ->leftjoin($this->formations, 'f')
                 ->leftjoin($this->categories, 'c')
                 ->where('c.'.$champ.' LIKE :valeur')
                 ->setParameter('valeur', '%'.$valeur.'%')
-                ->groupBy('p.id')
+                ->groupBy($this->idPlaylist)
                 ->addGroupBy($this->nameCategories)
-                ->orderBy('p.name', 'ASC')
+                ->orderBy($this->namePlaylist, 'ASC')
                 ->addOrderBy($this->nameCategories)
                 ->getQuery()
                 ->getResult();              
     }           
-    
-
+   
 }
+  
