@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    {{ form_start(formformation) }}
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col-auto">
+                    {{ form_row(formformation.title) }}
+                </div>
+                <div class="col">
+                    {{ form_row(formformation.playlist) }}
+                </div>
+                <div class="col">
+                    {{ form_row(formformation.categories) }}
+                </div>
+                <div class="col">
+                    {{ form_row(formformation.publishedAt) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form_row(formformation.description) }}
+            </div>
+        </div>
+    {{ form_end(formformation) }}
+{% endblock %}

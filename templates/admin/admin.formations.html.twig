@@ -1,27 +1,27 @@
-{% extends "basefront.html.twig" %}
+{% extends "baseadmin.html.twig" %}
 {% block body %}
     <table class="table table-striped" caption='Page des formations'>
         <caption></caption>
         <thead>
             <tr>
-                <th class="text-left align-top" scope="col">
-                    Formation<br />
-                    <a href="{{ path('formations.sort', {champ:'title', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
-                    <a href="{{ path('formations.sort', {champ:'title', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
-                    <form class="form-inline mt-1" method="POST" action="{{ path('formations.findallcontain', {champ:'title'}) }}">
+                <th class="text-left align-middle" scope="col">
+                    Formations enregistrées<br />
+                    <a href="{{ path('admin.formations.sort', {champ:'title', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('admin.formations.sort', {champ:'title', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                    <form class="form-inline mt-1" method="POST" action="{{ path('admin.formations.findallcontain', {champ:'title'}) }}">
                         <div class="form-group mr-1 mb-2">
                             <input type="text" class="sm" name="recherche" 
                                    value="{% if valeur|default and not table|default %}{{ valeur }}{% endif %}">
                             <input type="hidden" name="_token" value="{{ csrf_token('filtre_title') }}">
-                            <button type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
+                            <button type="submit" class="btn btn-info mb-2 btn-sm">Filtrer</button>
                         </div>
                     </form>           
                 </th>
-                <th class="text-left align-top" scope="col">
+                <th class="text-left align-middle" scope="col">
                     Playlist<br />
-                    <a href="{{ path('formations.sort', {table:'playlist', champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
-                    <a href="{{ path('formations.sort', {table:'playlist', champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
-                    <form class="form-inline mt-1" method="POST" action="{{ path('formations.findallcontain', {champ:'name', table:'playlist'}) }}">
+                    <a href="{{ path('admin.formations.sort', {table:'playlist', champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('admin.formations.sort', {table:'playlist', champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                    <form class="form-inline mt-1" method="POST" action="{{ path('admin.formations.findallcontain', {champ:'name', table:'playlist'}) }}">
                         <div class="form-group mr-1 mb-2">
                             <input type="text" class="sm" name="recherche" 
                                    value="{% if valeur|default and table|default and table=='playlist' %}{{ valeur }}{% endif %}">
@@ -30,9 +30,9 @@
                         </div>
                     </form>                    
                 </th>
-                  <th class="text-left align-top" scope="col">
+                <th class="text-left align-top" scope="col">
                     Catégories<br/>
-                    <form class="form-inline mt-1" method="POST" action="{{ path('formations.findallcontain', {champ:'id', table:'categories'}) }}">
+                    <form class="form-inline mt-1" method="POST" action="{{ path('admin.formations.findallcontain', {champ:'id', table:'categories'}) }}">
                         <select class="form-select form-select-sm" name="recherche" id="recherche" onchange="this.form.submit();">
                             <option value=""></option>
                             {% for categorie in categories %}
@@ -48,15 +48,18 @@
                 </th>
                 <th class="text-center align-top" scope="col">
                     Date<br />
-                    <a href="{{ path('formations.sort', {champ:'publishedAt', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
-                    <a href="{{ path('formations.sort', {champ:'publishedAt', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>                    
+                    <a href="{{ path('admin.formations.sort', {champ:'publishedAt', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('admin.formations.sort', {champ:'publishedAt', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>                    
                 </th>
                 <th class="text-center align-top" scope="col">
                     &nbsp;
                 </th>
+                <th class="text-center align-top" scope="col">
+                    <a href="{{ path('admin.formation.ajout') }}" class="btn btn-primary btn-lg">Ajouter</a>
+                </th>
             </tr>
         </thead>
-         <tbody>
+        <tbody>
             {% for formation in formations %}
                 <tr class="align-middle">
                     <td>
@@ -66,21 +69,20 @@
                     </td>
                     <td class="text-left">
                         {{ formation.playlist.name }}                  
-                    </td>                    
+                    </td>  
                     <td class="text-left">
                         {% for categorie in formation.categories %}
                             {{ categorie.name }}<br />
                         {% endfor %}
-                    </td>                    
+                    </td>
                     <td class="text-center">
                         {{ formation.publishedatstring }}
                     </td>
-                    <td class="text-center">
-                        {% if formation.miniature %}
-                            <a href="{{ path('formations.showone', {id:formation.id}) }}">
-                                <img src="{{ formation.miniature }}" alt='Images des formations'>
-                            </a>
-                        {% endif %}
+                    <td class="text-end">
+                        <a href="{{ path('admin.formation.edit', {id:formation.id}) }}" class="btn btn-secondary" onclick="return confirm('Modifier {{formation.title}} ?')">Modifier</a>
+                    </td>
+                    <td class="text-end">
+                        <a href="{{ path('admin.formation.suppr', {id:formation.id}) }}" class="btn btn-danger" onclick="return confirm('Supprimer {{formation.title}} ?')">Supprimer</a>
                     </td>
                 </tr>
             {% endfor %}

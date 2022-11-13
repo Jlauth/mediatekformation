@@ -93,7 +93,7 @@ class FormationsController extends AbstractController {
             'valeur' => $valeur,
             'table' => $table
         ]);
-    }  
+    }
     
     /**
      * @Route("/formations/formation/{id}", name="formations.showone")
