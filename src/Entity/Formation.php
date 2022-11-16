@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=FormationRepository::class)
@@ -26,12 +27,15 @@ class Formation
     private $id;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * 
+     * @ORM\Column(type="datetime", nullable=false)
+     * @Assert\LessThanOrEqual("now")
      */
     private $publishedAt;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * 
+     * @ORM\Column(type="string", length=100, nullable=false)
      */
     private $title;
 

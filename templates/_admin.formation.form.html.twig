@@ -1,27 +1,28 @@
 {% extends "base.html.twig" %}
 {% block body %}
+    {% form_theme formformation 'bootstrap_4_layout.html.twig' %}
     {{ form_start(formformation) }}
-    <div class="row">
-        <div class="col">
-            <div class="row">
-                <div class="col-auto">
-                    {{ form_row(formformation.title) }}
-                </div>
-                <div class="col">
-                    {{ form_row(formformation.playlist) }}
-                </div>
-                <div class="col">
-                    {{ form_row(formformation.categories) }}
-                </div>
-                <div class="col">
-                    {{ form_row(formformation.publishedAt) }}
-                </div>
+    </br>
+    <div class="col-auto">
+        <div class="row">
+            <div class="col">
+                {{ form_row(formformation.title) }}
+            </div>
+            <div class="col">
+                {{ form_row(formformation.playlist) }}
             </div>
         </div>
         <div class="row">
             <div class="col">
+                {{ form_row(formformation.categories) }}
+            </div>
+            <div class="col">
+                {{ form_row(formformation.publishedAt) }}
+            </div>
+            <div class="row">
                 {{ form_row(formformation.description) }}
             </div>
         </div>
+    </div>
     {{ form_end(formformation) }}
 {% endblock %}

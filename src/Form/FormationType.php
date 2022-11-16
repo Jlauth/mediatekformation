@@ -10,8 +10,12 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Description of FormationType
@@ -28,16 +32,22 @@ class FormationType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         
         $builder
-            ->add('title')
+            ->add('title', TextType::class, [
+                'label' => 'Intitulé de la nouvelle formation',
+                'required' => true,
+                'constraints' => [
+                    new Length(['min' => 6, 'max' => 100])
+                ]
+            ])
             ->add('playlist', EntityType::class, [
                 'class' => Playlist::class,
-                'choice_label' => 'name',
-                'multiple' => false,
-                'required' => true
+                'choice_label' => 'name', 
+                'multiple' => false
             ])
             ->add('categories', EntityType::class, [
                 'class' => Categorie::class,
-                'choice_label' => 'id',
+                'label' => 'Catégorie',
+                'choice_label' => 'name',
                 'multiple' => true,
                 'required' => false
             ])
@@ -46,10 +56,8 @@ class FormationType extends AbstractType {
                 'data' => isset($options['data']) && $options['data']->getPublishedAt() != null ? $options['data']->getPublishedAt() : new DateTime('now'),
                 'label' => 'Date'
             ])
-            ->add('description', EntityType::class, [
-                'class' => Formation::class,
-                'choice_label' => 'description',
-                'multiple' => false,
+            ->add('description', TextareaType::class, [
+                'label' => 'Description de la nouvelle formation',
                 'required' => false
             ])
             ->add('submit', SubmitType::class, [
