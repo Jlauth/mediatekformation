@@ -114,7 +114,7 @@ class AdminFormationsController extends AbstractController {
      * @param Formation $formation
      * @return Reponse
     */ 
-    public function suppr(Formation $formation): Reponse{
+    public function suppr(Formation $formation): Response{
         $this->formationRepository->remove($formation, true);
         return $this->redirectToRoute('admin.formations');
     }
