@@ -44,10 +44,9 @@ class AdminFormationsController extends AbstractController {
     private $playlistRepository;
     
     
-    public function __construct(FormationRepository $formationRepository, CategorieRepository $categorieRepository, PlaylistRepository $playlistRepository) {
+    public function __construct(FormationRepository $formationRepository, CategorieRepository $categorieRepository) {
         $this->formationRepository = $formationRepository;
         $this->categorieRepository = $categorieRepository;
-        $this->playlistRepository = $playlistRepository;
     }   
     
     /**
@@ -57,16 +56,14 @@ class AdminFormationsController extends AbstractController {
     public function index(): Response{
         $formations = $this->formationRepository->findAllOrderByEmpty('title', 'ASC');
         $categories = $this->categorieRepository->findAll();
-        $playlists = $this->playlistRepository->findAll();
         return $this->render($this->pagesFormationsAdmin, [
             'formations' => $formations,
-            'categories' => $categories,
-            'playlists' => $playlists
+            'categories' => $categories
         ]); 
     }
     
      /**
-     * @Route("/admin/tri/{champ}/{ordre}/{table}", name="admin.formations.sort")
+     * @Route("/admin/formations/tri/{champ}/{ordre}/{table}", name="admin.formations.sort")
      * @param type $champ
      * @param type $ordre
      * @param type $table
@@ -87,7 +84,7 @@ class AdminFormationsController extends AbstractController {
     }     
     
     /**
-     * @Route("/admin/recherche/{champ}/{table}", name="admin.formations.findallcontain")
+     * @Route("/admin/formations/recherche/{champ}/{table}", name="admin.formations.findallcontain")
      * @param type $champ
      * @param Request $request
      * @param type $table
@@ -110,7 +107,7 @@ class AdminFormationsController extends AbstractController {
     }
     
     /**
-     * @Route("/admin/suppr/{id}", name="admin.formation.suppr")
+     * @Route("/admin/formations/suppr/{id}", name="admin.formation.suppr")
      * @param Formation $formation
      * @return Reponse
     */ 
@@ -120,7 +117,7 @@ class AdminFormationsController extends AbstractController {
     }
     
      /**
-     * @Route("/admin/edit/{id}", name="admin.formation.edit")
+     * @Route("/admin/formations/edit/{id}", name="admin.formation.edit")
      * @param Formation $formation
      * @param Request $request
      * @return Reponse
@@ -139,7 +136,7 @@ class AdminFormationsController extends AbstractController {
     }
     
      /**
-     * @Route("/admin/ajout", name="admin.formation.ajout")
+     * @Route("/admin/formations/ajout", name="admin.formation.ajout")
      * @param Request $request
      * @return Reponse
      */

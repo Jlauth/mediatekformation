@@ -17,16 +17,10 @@ use Doctrine\Persistence\ManagerRegistry;
 class PlaylistRepository extends ServiceEntityRepository
 {
     // Propriétés privées de la classe PlayListRepository
-    private $id = 'p.id id';
-    private $name = 'p.name name';
     private $idPlaylist = 'p.id';
     private $namePlaylist = 'p.name';
-    private $nameCategory = 'c.name categoriename';
-    private $nbFormations = 'count(f.title) nb';
     private $formations = 'p.formations';
     private $categories = 'f.categories';
-    private $nameCategories = 'c.name';
-    
     
     
     public function __construct(ManagerRegistry $registry)
@@ -46,7 +40,7 @@ class PlaylistRepository extends ServiceEntityRepository
     public function remove(Playlist $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
-
+        
         if ($flush) {
             $this->getEntityManager()->flush();
         }

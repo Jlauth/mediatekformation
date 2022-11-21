@@ -1,26 +1,27 @@
 <?php
-namespace App\Controller;
 
+namespace App\Controller\admin;
+
+use App\Entity\Formation;
+use App\Entity\Playlist;
+use App\Form\PlaylistType;
 use App\Repository\CategorieRepository;
-use App\Repository\FormationRepository;
 use App\Repository\PlaylistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
 /**
- * Description of PlaylistsController
+ * Description of AdminPlaylistsController
  *
- * @author emds
+ * @author Jean
  */
-class PlaylistsController extends AbstractController {
-    
+class AdminPlaylistsController extends AbstractController {
     /**
      * 
      * @var type String
      */
-    private $pagePlaylists = "pages/playlists.html.twig";
+    private $pagePlaylistsAdmin = "admin/admin.playlists.html.twig";
     
     /**
      * 
@@ -35,39 +36,31 @@ class PlaylistsController extends AbstractController {
     private $categorieRepository;    
     
     /**
-     * 
-     * @var FormationRepository
-     */
-    private $formationRepository;
-    
-    /**
      * Constructeur de la classe PlaylistController
      * @param PlaylistRepository $playlistRepository
      * @param CategorieRepository $categorieRepository
-     * @param FormationRepository $formationRepository
      */
     function __construct(PlaylistRepository $playlistRepository, 
-            CategorieRepository $categorieRepository, FormationRepository $formationRepository) {
+            CategorieRepository $categorieRepository) {
         $this->playlistRepository = $playlistRepository;
         $this->categorieRepository = $categorieRepository;
-        $this->formationRepository = $formationRepository;
     }
     
     /**
-     * @Route("/playlists", name="playlists")
+     * @Route("/admin/playlists", name="admin.playlists")
      * @return Response
      */
     public function index(): Response{
         $playlists = $this->playlistRepository->findAllOrderByName('ASC');
         $categories = $this->categorieRepository->findAll();
-        return $this->render($this->pagePlaylists, [
+        return $this->render($this->pagePlaylistsAdmin, [
             'playlists' => $playlists,
             'categories' => $categories
         ]);
     }
 
       /**
-     * @Route("/playlists/tri/{champ}/{ordre}", name="playlists.sort")
+     * @Route("/admin/playlists/tri/{champ}/{ordre}", name="admin.playlists.sort")
      * @param type $champ
      * @param type $ordre
      * @return Response
@@ -82,7 +75,7 @@ class PlaylistsController extends AbstractController {
                     break;
         }
         $categories = $this->categorieRepository->findAll();
-        return $this->render($this->pagePlaylists, [
+        return $this->render($this->pagePlaylistsAdmin, [
             'playlists' => $playlists,
             'categories' => $categories            
         ]);
@@ -90,7 +83,7 @@ class PlaylistsController extends AbstractController {
 
     
     /**
-     * @Route("/playlists/recherche/{champ}/{table}", name="playlists.findallcontain")
+     * @Route("/admin/playlists/recherche/{champ}/{table}", name="admin.playlists.findallcontain")
      * @param type $champ
      * @param Request $request
      * @param type $table
@@ -105,7 +98,7 @@ class PlaylistsController extends AbstractController {
         }
         $categories = $this->categorieRepository->findAll();
 
-        return $this->render($this->pagePlaylists, [
+        return $this->render($this->pagePlaylistsAdmin, [
             'playlists' => $playlists,
             'categories' => $categories,
             'valeur' => $valeur,
@@ -113,34 +106,65 @@ class PlaylistsController extends AbstractController {
         ]);
     }  
     
-    /**
-     * @Route("/playlists/playlist/{id}", name="playlists.showone")
-     * @param type $id
-     * @return Response
-     */
-    public function showOne($id): Response{
-        $playlist = $this->playlistRepository->find($id);
-        $playlistCategories = $this->categorieRepository->findAllForOnePlaylist($id);
-        $playlistFormations = $this->formationRepository->findAllForOnePlaylist($id);
-        return $this->render("pages/playlist.html.twig", [
-            'playlist' => $playlist,
-            'playlistcategories' => $playlistCategories,
-            'playlistformations' => $playlistFormations
-        ]);        
-    } 
-    
      /**
-     * @Route("/playlists/tri/{ordre}", name="playlists.sortonnbformation")
+     * @Route("/admin/playlists/tri/{ordre}", name="admin.playlists.sortonnbformation")
      * @param type $ordre
      * @return Response
      */
     public function sortOnNbFormation($ordre): Response{
         $playlists = $this->playlistRepository->findAllOrderByNbFormations($ordre);
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/playlists.html.twig", [
+        return $this->render($this->pagePlaylistsAdmin, [
             'playlists' => $playlists,
             'categories' => $categories
         ]);
     }
-  
+    
+    /**
+     * @Route("/admin/playlists/suppr/{id}", name="admin.playlist.suppr")
+     * @param Formation $playlist
+     * @return Reponse
+    */ 
+    public function suppr(Playlist $playlist): Response{
+        $this->playlistRepository->remove($playlist, true);
+        return $this->redirectToRoute('admin.playlists');
+    }
+    
+    /**
+     * @Route("/admin/playlists/edit/{id}", name="admin.playlist.edit")
+     * @param Playlist $playlist
+     * @param Request $request
+     * @return Reponse
+     */
+    public function edit(Playlist $playlist, Request $request): Response{
+        $formPlaylist = $this->createForm(PlaylistType::class, $playlist);
+        $formPlaylist->handleRequest($request);
+        if($formPlaylist->isSubmitted() && $formPlaylist->isValid()) {
+            $this->playlistRepository->add($playlist, true);
+            return $this->redirectToRoute('admin.playlists');
+        }
+        return $this->render("admin/admin.playlist.edit.html.twig", [
+            'playlist' => $playlist,
+            'formplaylist' => $formPlaylist->createView()
+        ]);
+    }
+    
+    /**
+     * @Route("/admin/playlists/ajout", name="admin.playlist.ajout")
+     * @param Request $request
+     * @return Reponse
+     */
+    public function ajout(Request $request): Response {
+        $playlist = new Playlist();
+        $formPlaylist = $this->createForm(PlaylistType::class, $playlist);
+        $formPlaylist->handleRequest($request);
+        if($formPlaylist->isSubmitted() && $formPlaylist->isValid()) {
+            $this->playlistRepository->add($playlist, true);
+            return $this->redirectToRoute('admin.playlists');
+        }
+        return $this->render("admin/admin.playlist.ajout.html.twig", [
+            'playlist' => $playlist,
+            'formplaylist' => $formPlaylist->createView()
+        ]);
+    }
 }
