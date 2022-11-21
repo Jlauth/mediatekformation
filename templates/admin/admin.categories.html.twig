@@ -1,0 +1,33 @@
+{% extends "baseadmin.html.twig" %}
+{% block body%}
+    <table class="table table-striped" caption='Page des catégories'>
+        <caption></caption>
+        <thead>
+            <tr>
+                <th class="text-left align-top" scope="col">
+                    Catégories<br />
+                    <a href="{{ path('admin.categories.sort', {champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('admin.categories.sort', {champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for k in 0..categories|length-1 %}
+                <tr class="align-middle">
+                    <td>
+                        {{ categories[k].name }}
+                    </td>
+                    <td class="text-end">
+                    {% if categories[k].formations|length == 1 %}
+                        <a href="{{ path('admin.categorie.suppr', {id:categories[k].id}) }}" class="btn btn-danger" onclick="alert('Impossible de supprimer une catégorie contenant {{categories[k].formations|length}} formation'); return false;">Supprimer</a>    
+                    {% elseif categories[k].formations|length > 1 %}
+                        <a href="{{ path('admin.categorie.suppr', {id:categories[k].id}) }}" class="btn btn-danger" onclick="alert('Impossible de supprimer une catégorie contenant {{categories[k].formations|length}} formations'); return false;">Supprimer</a>
+                    {% else %}
+                        <a href="{{ path('admin.categorie.suppr', {id:categories[k].id}) }}" class="btn btn-danger" onclick="return confirm('Supprimer {{categories[k].name}} ?')">Supprimer</a>
+                    {% endif %}
+                    </td>        
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -15,7 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Description of FormationType
@@ -53,7 +52,8 @@ class FormationType extends AbstractType {
             ])
             ->add('publishedAt', DateType::class, [
                 'widget' => 'single_text',
-                'data' => isset($options['data']) && $options['data']->getPublishedAt() != null ? $options['data']->getPublishedAt() : new DateTime('now'),
+                'data' => isset($options['data']) && $options['data']->getPublishedAt() != null ? 
+                    $options['data']->getPublishedAt() : new DateTime('now'),
                 'label' => 'Date'
             ])
             ->add('description', TextareaType::class, [
