@@ -6,7 +6,6 @@ use App\Entity\Formation;
 use App\Form\FormationType;
 use App\Repository\CategorieRepository;
 use App\Repository\FormationRepository;
-use App\Repository\PlaylistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,13 +35,7 @@ class AdminFormationsController extends AbstractController {
      * @var CategorieRepository
      */
     private $categorieRepository;
-    
-    /**
-     * 
-     * @var PlaylistRepository
-     */
-    private $playlistRepository;
-    
+      
     
     public function __construct(FormationRepository $formationRepository, CategorieRepository $categorieRepository) {
         $this->formationRepository = $formationRepository;
@@ -109,7 +102,7 @@ class AdminFormationsController extends AbstractController {
     /**
      * @Route("/admin/formations/suppr/{id}", name="admin.formation.suppr")
      * @param Formation $formation
-     * @return Reponse
+     * @return Response
     */ 
     public function suppr(Formation $formation): Response{
         $this->formationRepository->remove($formation, true);
@@ -120,7 +113,7 @@ class AdminFormationsController extends AbstractController {
      * @Route("/admin/formations/edit/{id}", name="admin.formation.edit")
      * @param Formation $formation
      * @param Request $request
-     * @return Reponse
+     * @return Response
      */
     public function edit(Formation $formation, Request $request): Response {
         $formFormation = $this->createForm(FormationType::class, $formation);
@@ -138,7 +131,7 @@ class AdminFormationsController extends AbstractController {
      /**
      * @Route("/admin/formations/ajout", name="admin.formation.ajout")
      * @param Request $request
-     * @return Reponse
+     * @return Response
      */
     public function ajout(Request $request): Response {
         $formation = new Formation();
