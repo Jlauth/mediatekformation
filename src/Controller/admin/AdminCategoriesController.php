@@ -3,8 +3,10 @@
 namespace App\Controller\admin;
 
 use App\Entity\Categorie;
+use App\Form\CategorieType;
 use App\Repository\CategorieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -32,7 +34,7 @@ class AdminCategoriesController extends AbstractController {
      * 
      * @param CategorieRepository $categorieRepository
      */
-    function __construct(CategorieRepository $categorieRepository){
+    public function __construct(CategorieRepository $categorieRepository){
         $this->categorieRepository = $categorieRepository;
     }
     
@@ -61,10 +63,29 @@ class AdminCategoriesController extends AbstractController {
     /**
      * @Route("/admin/categories/suppr/{id}", name="admin.categorie.suppr")
      * @param Categorie $categorie
-     * @return Reponse
+     * @return Response
     */ 
     public function suppr(Categorie $categorie): Response{
         $this->categorieRepository->remove($categorie, true);
         return $this->redirectToRoute('admin.categories');
+    }
+    
+    /**
+     * @Route("/admin/categories/ajout", name="admin.categorie.ajout")
+     * @param Request $request 
+     * @return Response
+     */
+    public function ajout(Request $request): Response{
+        $categorie = new Categorie();
+        $formCategorie = $this->createForm(CategorieType::class, $categorie);
+        $formCategorie->handleRequest($request);
+        if($formCategorie->isSubmitted() && $formCategorie->isValid()){
+            $this->categorieRepository->add($categorie, true);
+            return $this->redirectToRoute('admin.categories');
+        }
+        return $this->render("admin/admin.categorie.ajout.html.twig", [
+            'categorie' => $categorie,
+            'formCategorie' => $formCategorie->createView()
+        ]);
     }
 }
