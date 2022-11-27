@@ -39,11 +39,11 @@ class PlaylistType extends AbstractType {
                 'disabled' => true
             ])
             ->add('description', TextareaType::class, [
-            'label' => 'Description de la nouvelle playlist',
-            'required' => false
+                'label' => 'Description de la nouvelle playlist',
+                'required' => false
             ])
-            ->add('submit', SubmitType::class, [
-            'label' => 'Ajouter'
+                ->add('submit', SubmitType::class, [
+                'label' => 'Ajouter'
             ])
         ;
     }
