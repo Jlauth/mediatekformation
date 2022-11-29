@@ -97,7 +97,7 @@ class FormationsController extends AbstractController {
         }
         return $this->redirectToRoute("formations");
     }
-    
+
     /**
      * @Route("/formations/formation/{id}", name="formations.showone")
      * @param type $id

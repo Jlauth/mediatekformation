@@ -16,24 +16,17 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FormationRepository extends ServiceEntityRepository
 {
-    // propriété privée de la classe FormationRepository
+    /**
+     * 
+     * @var type String
+     */
     private $publishedAt = 'f.publishedAt';
     
-    /**
-     * Constructeur de la classe 
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Formation::class);
     }
 
-    /**
-     * Méthode d'ajout
-     * @param Formation $entity
-     * @param bool $flush
-     * @return void
-     */
     public function add(Formation $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -84,9 +77,10 @@ class FormationRepository extends ServiceEntityRepository
                     ->join('f.'.$table, 't')
                     ->orderBy('t.'.$champ, $ordre)
                     ->getQuery()
-                    ->getResult();     
+                    ->getResult();            
     }
     
+
     /**
      * Enregistrements dont un champ contient une valeur
      * ou tous les enregistrements si la valeur est vide
@@ -100,35 +94,12 @@ class FormationRepository extends ServiceEntityRepository
             return $this->findAll();
         }
         return $this->createQueryBuilder('f')
-                    ->where('f.'.$champ.' LIKE :valeur')
-                    ->orderBy($this->publishedAt, 'DESC')
-                    ->setParameter('valeur', '%'.$valeur.'%')
-                    ->getQuery()
-                    ->getResult();  
-             
-    }
-    
-    /**
-     * Enregistrements dont un champ contient une valeur
-     * ou tous les enregistrements si la valeur est vide
-     * @param type $champ
-     * @param type $valeur
-     * @param type $table
-     * @return Formation[]
-     */
-    public function findByContainValue($champ, $valeur, $table): array{
-        if($valeur==""){
-            return $this->findAll();        
-        }
-        return $this->createQueryBuilder('f')
-                ->join('f.'.$table, 't')                    
-                ->where('t.'.$champ.' LIKE :valeur')
+                ->where('f.'.$champ.' LIKE :valeur')
                 ->orderBy($this->publishedAt, 'DESC')
                 ->setParameter('valeur', '%'.$valeur.'%')
                 ->getQuery()
-                ->getResult();                   
-    }       
-        
+                ->getResult();            
+    }
     
     
     /**
