@@ -145,5 +145,4 @@ class PlaylistsController extends AbstractController {
                     'categories' => $categories
         ]);
     }
-
 }
