@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table()
@@ -16,14 +17,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Categorie
 {
     /**
+     * @var integer $id
+     * 
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(name="name", type="string", length=50, unique=true)
+     * @var string $name
+     * 
+     * @ORM\Column(name="name", type="string", unique=true)
+     * @Assert\Length(min=6, max=100)
      */
     private $name;
 

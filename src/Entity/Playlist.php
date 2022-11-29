@@ -6,27 +6,38 @@ use App\Repository\PlaylistRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ORM\Table()
  * @ORM\Entity(repositoryClass=PlaylistRepository::class)
+ * @UniqueEntity(fields="name", message="Ce nom de playlist existe déjà")
  */
 class Playlist
 {
     /**
+     * @var integer $id
+     * 
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @var string $name
+     * 
+     * @ORM\Column(name="name", type="string", nullable=false, unique=true)
+     * @Assert\Length(min=6, max=100)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @var text $description
+     * 
+     * @ORM\Column(name="description", type="text", nullable=true)
+     * @Assert\Length(min=10, max=255)
      */
     private $description;
 
