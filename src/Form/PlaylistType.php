@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * Description of PlaylistType
@@ -25,18 +24,14 @@ class PlaylistType extends AbstractType {
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Intitulé de la playlist',
-                'required' => true,
-                'constraints' => [
-                    new Length(['min' => 6, 'max' => 100])
-                ]    
+                'required' => true
             ])
             ->add('formations', EntityType::class, [
                 'class' => Formation::class,
                 'label' => 'Titre de la formation',
                 'choice_label' => 'title',
                 'multiple' => true,
-                'required' => false,
-                'disabled' => true
+                'required' => false
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description de la nouvelle playlist',

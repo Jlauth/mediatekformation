@@ -14,7 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * Description of FormationType
@@ -33,15 +32,13 @@ class FormationType extends AbstractType {
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Intitulé de la nouvelle formation',
-                'required' => true,
-                'constraints' => [
-                    new Length(['min' => 6, 'max' => 100])
-                ]
+                'required' => true
             ])
             ->add('playlist', EntityType::class, [
                 'class' => Playlist::class,
                 'choice_label' => 'name', 
-                'multiple' => false
+                'multiple' => false,
+                'required' => true
             ])
             ->add('categories', EntityType::class, [
                 'class' => Categorie::class,
@@ -54,7 +51,8 @@ class FormationType extends AbstractType {
                 'widget' => 'single_text',
                 'data' => isset($options['data']) && $options['data']->getPublishedAt() != null ? 
                     $options['data']->getPublishedAt() : new DateTime('now'),
-                'label' => 'Date'
+                'label' => 'Date',
+                'required' => true
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description de la nouvelle formation',
