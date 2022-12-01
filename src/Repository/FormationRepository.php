@@ -14,21 +14,29 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Formation[]    findAll()
  * @method Formation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FormationRepository extends ServiceEntityRepository
-{
+class FormationRepository extends ServiceEntityRepository {
+
     /**
      * 
      * @var type String
      */
     private $publishedAt = 'f.publishedAt';
-    
-    public function __construct(ManagerRegistry $registry)
-    {
+
+    /**
+     * Constructeur de FormationRepository
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Formation::class);
     }
 
-    public function add(Formation $entity, bool $flush = false): void
-    {
+    /**
+     * Ajout d'une formation
+     * @param Formation $entity
+     * @param bool $flush
+     * @return void
+     */
+    public function add(Formation $entity, bool $flush = false): void {
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
@@ -37,13 +45,12 @@ class FormationRepository extends ServiceEntityRepository
     }
 
     /**
-     * Méthode de suppression
-     * @param Formation $entity
+     * Suppression d'une formation
+     * @param Formation $entity 
      * @param bool $flush
      * @return void
      */
-    public function remove(Formation $entity, bool $flush = false): void
-    {
+    public function remove(Formation $entity, bool $flush = false): void {
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
@@ -58,11 +65,11 @@ class FormationRepository extends ServiceEntityRepository
      * @param type $table si $champ dans une autre table
      * @return Formation[]
      */
-    public function findAllOrderByEmpty($champ, $ordre): array{
+    public function findAllOrderByEmpty($champ, $ordre): array {
         return $this->createQueryBuilder('f')
-                ->orderBy('f.'.$champ, $ordre)
-                ->getQuery()
-                ->getResult();
+                        ->orderBy('f.' . $champ, $ordre)
+                        ->getQuery()
+                        ->getResult();
     }
 
     /**
@@ -72,14 +79,14 @@ class FormationRepository extends ServiceEntityRepository
      * @param type $table avec le champ présent dans la table
      * @return Formation[]
      */
-    public function findAllOrderBy($champ, $ordre, $table): array{
+    public function findAllOrderBy($champ, $ordre, $table): array {
         return $this->createQueryBuilder('f')
-                    ->join('f.'.$table, 't')
-                    ->orderBy('t.'.$champ, $ordre)
-                    ->getQuery()
-                    ->getResult();            
+                        ->join('f.' . $table, 't')
+                        ->orderBy('t.' . $champ, $ordre)
+                        ->getQuery()
+                        ->getResult();
     }
-    
+
 
     /**
      * Enregistrements dont un champ contient une valeur
@@ -89,45 +96,43 @@ class FormationRepository extends ServiceEntityRepository
      * @param type $table si $champ dans une autre table
      * @return Formation[]
      */
-    public function findByContainValueEmpty($champ, $valeur): array{
-        if($valeur=="") {
+    public function findByContainValueEmpty($champ, $valeur): array {
+        if ($valeur == "") {
             return $this->findAll();
         }
         return $this->createQueryBuilder('f')
-                ->where('f.'.$champ.' LIKE :valeur')
-                ->orderBy($this->publishedAt, 'DESC')
-                ->setParameter('valeur', '%'.$valeur.'%')
-                ->getQuery()
-                ->getResult();            
+                        ->where('f.' . $champ . ' LIKE :valeur')
+                        ->orderBy($this->publishedAt, 'DESC')
+                        ->setParameter('valeur', '%' . $valeur . '%')
+                        ->getQuery()
+                        ->getResult();
     }
-    
-    
+
     /**
      * Retourne les n formations les plus récentes
      * @param type $nb
      * @return Formation[]
      */
-    public function findAllLasted($nb) : array {
+    public function findAllLasted($nb): array {
         return $this->createQueryBuilder('f')
-                ->orderBy($this->publishedAt, 'DESC')
-                ->setMaxResults($nb)     
-                ->getQuery()
-                ->getResult();
-    }    
-    
+                        ->orderBy($this->publishedAt, 'DESC')
+                        ->setMaxResults($nb)
+                        ->getQuery()
+                        ->getResult();
+    }
+
     /**
      * Retourne la liste des formations d'une playlist
      * @param type $idPlaylist
      * @return array
      */
-    public function findAllForOnePlaylist($idPlaylist): array{
+    public function findAllForOnePlaylist($idPlaylist): array {
         return $this->createQueryBuilder('f')
-                ->join('f.playlist', 'p')
-                ->where('p.id=:id')
-                ->setParameter('id', $idPlaylist)
-                ->orderBy($this->publishedAt, 'ASC')   
-                ->getQuery()
-                ->getResult();        
+                        ->join('f.playlist', 'p')
+                        ->where('p.id=:id')
+                        ->setParameter('id', $idPlaylist)
+                        ->orderBy($this->publishedAt, 'ASC')
+                        ->getQuery()
+                        ->getResult();
     }
-
 }
