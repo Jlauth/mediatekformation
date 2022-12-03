@@ -5,7 +5,7 @@
         <thead>
             <tr>
                 <th class="text-left align-top" scope="col">
-                    Formation<br />
+                    Formation<br/>
                     <a href="{{ path('formations.sort', {champ:'title', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
                     <a href="{{ path('formations.sort', {champ:'title', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
                     <form class="form-inline mt-1" method="POST" action="{{ path('formations.findallcontain', {champ:'title'}) }}">
@@ -18,7 +18,7 @@
                     </form>           
                 </th>
                 <th class="text-left align-top" scope="col">
-                    Playlist<br />
+                    Playlist<br/>
                     <a href="{{ path('formations.sort', {table:'playlist', champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
                     <a href="{{ path('formations.sort', {table:'playlist', champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
                     <form class="form-inline mt-1" method="POST" action="{{ path('formations.findallcontain', {champ:'name', table:'playlist'}) }}">
@@ -30,7 +30,7 @@
                         </div>
                     </form>                    
                 </th>
-                  <th class="text-left align-top" scope="col">
+                <th class="text-left align-top" scope="col">
                     Catégories<br/>
                     <form class="form-inline mt-1" method="POST" action="{{ path('formations.findallcontain', {champ:'id', table:'categories'}) }}">
                         <select class="form-select form-select-sm" name="recherche" id="recherche" onchange="this.form.submit();">
@@ -56,21 +56,25 @@
                 </th>
             </tr>
         </thead>
-         <tbody>
+        <tbody>
             {% for formation in formations %}
                 <tr class="align-middle">
                     <td>
-                        <h5 class="text-info">
+                        <h4 class="text-info">
                             {{ formation.title }}
-                        </h5>
+                        </h4>
                     </td>
-                    <td class="text-left">
-                        {{ formation.playlist.name }}                  
+                    <td>
+                        <h5 class="text-left">
+                            {{ formation.playlist.name }}        
+                        </h5>
                     </td>                    
-                    <td class="text-left">
-                        {% for categorie in formation.categories %}
-                            {{ categorie.name }}<br />
-                        {% endfor %}
+                    <td>
+                        <h5 class="text-left">
+                            {% for categorie in formation.categories %}
+                                {{ categorie.name }}<br />
+                            {% endfor %}
+                        </h5>
                     </td>                    
                     <td class="text-center">
                         {{ formation.publishedatstring }}
