@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Repository\CategorieRepository;
@@ -20,34 +21,34 @@ class FormationsController extends AbstractController {
      * @var type String
      */
     private $pagesFormations = "pages/formations.html.twig";
-    
+
     /**
      * 
      * @var FormationRepository
      */
     private $formationRepository;
-    
+
     /**
      * 
      * @var CategorieRepository
      */
     private $categorieRepository;
-    
+
     function __construct(FormationRepository $formationRepository, CategorieRepository $categorieRepository) {
         $this->formationRepository = $formationRepository;
-        $this->categorieRepository= $categorieRepository;
+        $this->categorieRepository = $categorieRepository;
     }
-    
+
     /**
      * @Route("/formations", name="formations")
      * @return Response
      */
-    public function index(): Response{
+    public function index(): Response {
         $formations = $this->formationRepository->findAllOrderByEmpty('title', 'ASC');
         $categories = $this->categorieRepository->findAll();
         return $this->render($this->pagesFormations, [
-            'formations' => $formations,
-            'categories' => $categories
+                    'formations' => $formations,
+                    'categories' => $categories
         ]);
     }
 
@@ -58,20 +59,19 @@ class FormationsController extends AbstractController {
      * @param type $table
      * @return Response
      */
-    public function sort($champ, $ordre, $table=""): Response{
-        if($table!=""){
-           $formations = $this->formationRepository->findAllOrderBy($champ, $ordre, $table);
-        }
-        else{
+    public function sort($champ, $ordre, $table = ""): Response {
+        if ($table != "") {
+            $formations = $this->formationRepository->findAllOrderBy($champ, $ordre, $table);
+        } else {
             $formations = $this->formationRepository->findAllOrderByEmpty($champ, $ordre);
         }
         $categories = $this->categorieRepository->findAll();
         return $this->render($this->pagesFormations, [
-            'formations' => $formations,
-            'categories' => $categories
+                    'formations' => $formations,
+                    'categories' => $categories
         ]);
-    }     
-    
+    }
+
     /**
      * @Route("/formations/recherche/{champ}/{table}", name="formations.findallcontain")
      * @param type $champ
@@ -79,23 +79,32 @@ class FormationsController extends AbstractController {
      * @param type $table
      * @return Response
      */
-    public function findAllContain($champ, Request $request, $table=""): Response{
-        if($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token'))){
-            $valeur = $request->get("recherche");
-            if($table != ""){
-                $formations = $this->formationRepository->findByContainValue($champ, $valeur, $table); 
-            }else{
-                $formations = $this->formationRepository->findByContainValueEmpty($champ, $valeur);
-            }
+    public function findAllContain($champ, Request $request, $table = ""): Response {
+
+        $valeur = $request->get("recherche");
+        if ($table != "") {
+            $formations = $this->formationRepository->findByContainValue($champ, $valeur, $table);
             $categories = $this->categorieRepository->findAll();
             return $this->render($this->pagesFormations, [
-                'formations' => $formations,
-                'categories' => $categories,
-                'valeur' => $valeur,
-                'table' => $table
+                        'formations' => $formations,
+                        'categories' => $categories,
+                        'valeur' => $valeur,
+                        'table' => $table
             ]);
+        } else {
+            if ($this->isCsrfTokenValid('filtre_' . $champ, $request->get('_token'))) {
+                $formations = $this->formationRepository->findByContainValueEmpty($champ, $valeur);
+
+                $categories = $this->categorieRepository->findAll();
+                return $this->render($this->pagesFormations, [
+                            'formations' => $formations,
+                            'categories' => $categories,
+                            'valeur' => $valeur,
+                            'table' => $table
+                ]);
+            }
+            return $this->redirectToRoute("formations");
         }
-        return $this->redirectToRoute("formations");
     }
 
     /**
@@ -103,11 +112,11 @@ class FormationsController extends AbstractController {
      * @param type $id
      * @return Response
      */
-    public function showOne($id): Response{
+    public function showOne($id): Response {
         $formation = $this->formationRepository->find($id);
         return $this->render("pages/formation.html.twig", [
-            'formation' => $formation
-        ]);        
-    }   
-    
+                    'formation' => $formation
+        ]);
+    }
+
 }

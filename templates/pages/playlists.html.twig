@@ -48,19 +48,23 @@
                 <tr class="align-middle">
                     <td>
                         <h5 class="text-info">
-                                {{ playlists[k].name }}
+                            {{ playlists[k].name }}
                         </h5>
                     </td>         
-                     <td class="text-left">
-                        {{ playlists[k].formations|length }}
+                    <td> 
+                        <h5 class="text-left">
+                            {{ playlists[k].formations|length }}
+                        </h5>
                     </td>  		
-                    <td class="text-left">
+                    <td>
+                        <h5 class="text-left">
                         {% set categories = playlists[k].categoriesplaylist %}
                         {% if categories|length > 0  %}
                             {% for c in 0..categories|length-1 %}
-                                    &nbsp;{{ categories[c] }}                                  
+                                &nbsp;{{ categories[c] }}                                  
                             {% endfor %}
                         {% endif %}
+                        </h5>
                     </td>           
                     <td class="text-center">
                         <a href="{{ path('playlists.showone', {id:playlists[k].id}) }}" class="btn btn-secondary">Voir détail</a>

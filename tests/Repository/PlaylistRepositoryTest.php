@@ -48,7 +48,7 @@ class PlaylistRepositoryTest extends KernelTestCase {
     /**
      * Test sur la suppression d'une playlist
      */
-    public function testRemoveFormation(){
+    public function testRemovePlaylist(){
         $repository = $this->getRepository();
         $playlist = $this->newPlaylist();
         $repository->add($playlist, true);
@@ -57,4 +57,33 @@ class PlaylistRepositoryTest extends KernelTestCase {
         $this->assertEquals($nbPlaylists -1, $repository->count([]), "Erreur lors de la suppresion");
     }
     
+    /**
+     * Test sur la méthode findAllOrderByName
+     */
+    public function testFindAllOderByName(){
+        $repository = $this->getRepository();
+        $playlists = $repository->findAllOrderByName("ASC");
+        $nbPlaylists = count($playlists);
+        $this->assertEquals($repository->count([]), $nbPlaylists);
+    }
+    
+    /**
+     * Test sur la méthode findAllOrderByNbFormations
+     */
+   public function testFindAllOrderByNbFormations(){
+        $repository = $this->getRepository();
+        $playlists = $repository->findAllOrderByNbFormations("ASC");
+        $nbPlaylists = count($playlists);
+        $this->assertEquals($repository->count([]), $nbPlaylists);
+    }
+    
+    /**
+     * Test sur la méthode findByContainValue
+     */
+    public function testFindByContainValue(){
+        $repository = $this->getRepository();
+        $playlists = $repository->findByContainValue("name", "Eclipse et Java");
+        $nbPlaylists = count($playlists);
+        $this->assertEquals(1 , $nbPlaylists);
+    }
 }
