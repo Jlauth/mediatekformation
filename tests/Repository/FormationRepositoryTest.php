@@ -65,9 +65,10 @@ class FormationRepositoryTest extends KernelTestCase {
         $repository = $this->getRepository();
         $formation = $this->newFormation();
         $repository->add($formation, true);
+        /** @var type $formations */
         $formations = $repository->findAllOrderByEmpty("title", "ASC");
-        $nbFormations = $repository->count([]);
-        $this->assertEquals($nbFormations, $repository->count([]));
+        $nbFormations = count($formations);
+        $this->assertEquals(238, $nbFormations);
     }
 
     /**
@@ -77,9 +78,10 @@ class FormationRepositoryTest extends KernelTestCase {
         $repository = $this->getRepository();
         $formation = $this->newFormation();
         $repository->add($formation, true);
+        /** @var type $formations */
         $formations = $repository->findAllOrderBy("name", "ASC", "categories");
-        $nbFormations = $repository->count([]);
-        $this->assertEquals($nbFormations, $repository->count([]));
+        $nbFormations = count($formations);
+        $this->assertEquals(224, $nbFormations);
     }
 
     /**
@@ -96,12 +98,10 @@ class FormationRepositoryTest extends KernelTestCase {
     }
     
     /**
-     * Test sur la méthode findAllLaster
+     * Test sur la méthode findAllLast
      */
-    public function testfindAllLasted(){
+    public function testfindAllLast(){
         $repository = $this->getRepository();
-        $formation = $this->newFormation();
-        $repository->add($formation, true);
         $formations = $repository->findAllLasted(1);
         $nbFormations = count($formations);
         $this->assertEquals(1, $nbFormations);
@@ -112,10 +112,8 @@ class FormationRepositoryTest extends KernelTestCase {
      */
     public function testFindAllForOnePlaylist(){
         $repository = $this->getRepository();
-        $formation = $this->newFormation();
-        $repository->add($formation, true);
-        $formations = $repository->findAllForOnePlaylist(1);
+        $formations = $repository->findAllForOnePlaylist(0);
         $nbFormations = count($formations);
-        $this->assertEquals(1, $nbFormations);
+        $this->assertEquals(0, $nbFormations);
     }
 }

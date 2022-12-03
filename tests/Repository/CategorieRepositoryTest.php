@@ -55,4 +55,27 @@ class CategorieRepositoryTest extends KernelTestCase {
         $repository->remove($categorie, true);
         $this->assertEquals($nbCategories -1, $repository->count([]), "Erreur lors de la suppresion");
     }
+
+
+    
+    /**
+     * Test sur la méthode findAllForOnePlaylist
+     */
+    public function testFindAllFOrOnePlaylist(){
+        $repository = $this->getRepository();
+        $categories = $repository->findAllForOnePlaylist(2);
+        $nbCategories = count($categories);
+        $this->assertEquals(2, $nbCategories);
+    }
+    
+    /**
+     * Test sur la méthode findAllOrderBy
+     */
+    public function testFindAllOrderBy(){
+        $repository = $this->getRepository();
+        $categories = $repository->findAllOrderBy("id", "DESC");
+        $nbCategories = count($categories);
+        $this->assertEquals(9, $nbCategories);
+    }
+
 }
