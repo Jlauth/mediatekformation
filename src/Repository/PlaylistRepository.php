@@ -16,7 +16,6 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PlaylistRepository extends ServiceEntityRepository {
 
-    // Propriétés privées de la classe PlayListRepository
     private $idPlaylist = 'p.id';
     private $namePlaylist = 'p.name';
     private $formations = 'p.formations';
@@ -43,8 +42,7 @@ class PlaylistRepository extends ServiceEntityRepository {
     }
 
     /**
-     * Retourne toutes les playlists triées sur le nom de la playlist
-     * @param type $champ
+     * Tri sur le nom d'une playlist
      * @param type $ordre
      * @return Playlist[]
      */
@@ -73,36 +71,48 @@ class PlaylistRepository extends ServiceEntityRepository {
 
     /**
      * Enregistrements dont un champ contient une valeur
+     * ou tous les enregistrements si la valeur est vide dans Playlist
+     * @param type $champ
+     * @param type $valeur
+     * @return Playlist[]
+     */
+    public function findByContainValue($champ, $valeur): array {
+        if ($valeur == "") {
+            return $this->findAll();
+        } else {
+            return $this->createQueryBuilder('p')
+                            ->leftjoin($this->formations, 'f')
+                            ->where('p.' . $champ . ' LIKE :valeur')
+                            ->setParameter('valeur', '%' . $valeur . '%')
+                            ->groupBy($this->idPlaylist)
+                            ->orderBy($this->namePlaylist, 'ASC')
+                            ->getQuery()
+                            ->getResult();
+        }
+    }
+
+    /**
+     * Enregistrements dont un champ contient une valeur
      * ou tous les enregistrements si la valeur est vide
      * @param type $champ
      * @param type $valeur
      * @param type $table si $champ dans une autre table
-     * @return Playlist[]
+     * @return array
      */
-    public function findByContainValue($champ, $valeur, $table = ""): array {
+    public function findByContainValueTable($champ, $valeur, $table): array {
         if ($valeur == "") {
-            return $this->findAllOrderByName('ASC');
+            return $this->findAll();
         } else {
-            if ($table == "") {
-                return $this->createQueryBuilder('p')
-                                ->leftjoin($this->formations, 'f')
-                                ->where('p.' . $champ . ' LIKE :valeur')
-                                ->setParameter('valeur', '%' . $valeur . '%')
-                                ->groupBy($this->idPlaylist)
-                                ->orderBy($this->namePlaylist, 'ASC')
-                                ->getQuery()
-                                ->getResult();
-            } else {
-                return $this->createQueryBuilder('p')
-                                ->leftjoin($this->formations, 'f')
-                                ->leftjoin($this->categories, 'c')
-                                ->where('c.' . $champ . ' LIKE :valeur')
-                                ->setParameter('valeur', '%' . $valeur . '%')
-                                ->groupBy($this->idPlaylist)
-                                ->orderBy($this->namePlaylist, 'ASC')
-                                ->getQuery()
-                                ->getResult();
-            }
+            return $this->createQueryBuilder('p')
+                            ->leftjoin($this->formations, 'f')
+                            ->leftjoin($this->categories, 'c')
+                            ->where('c.' . $champ . ' LIKE :valeur')
+                            ->setParameter('valeur', '%' . $valeur . '%')
+                            ->groupBy($this->idPlaylist)
+                            ->orderBy($this->namePlaylist, 'ASC')
+                            ->getQuery()
+                            ->getResult();
         }
     }
+
 }

@@ -29,7 +29,6 @@ class Categorie
      * @var string $name
      * 
      * @ORM\Column(name="name", type="string", unique=true)
-     * @Assert\Length(min=6, max=100)
      */
     private $name;
 

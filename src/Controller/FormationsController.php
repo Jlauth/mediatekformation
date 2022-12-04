@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\CategorieRepository;
 use App\Repository\FormationRepository;
+use App\Repository\PlaylistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,22 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FormationsController extends AbstractController {
 
-    /**
-     * 
-     * @var type String
-     */
     private $pagesFormations = "pages/formations.html.twig";
-
-    /**
-     * 
-     * @var FormationRepository
-     */
     private $formationRepository;
-
-    /**
-     * 
-     * @var CategorieRepository
-     */
     private $categorieRepository;
 
     function __construct(FormationRepository $formationRepository, CategorieRepository $categorieRepository) {
@@ -44,7 +31,7 @@ class FormationsController extends AbstractController {
      * @return Response
      */
     public function index(): Response {
-        $formations = $this->formationRepository->findAllOrderByEmpty('title', 'ASC');
+        $formations = $this->formationRepository->findAll();
         $categories = $this->categorieRepository->findAll();
         return $this->render($this->pagesFormations, [
                     'formations' => $formations,
@@ -61,9 +48,9 @@ class FormationsController extends AbstractController {
      */
     public function sort($champ, $ordre, $table = ""): Response {
         if ($table != "") {
-            $formations = $this->formationRepository->findAllOrderBy($champ, $ordre, $table);
+            $formations = $this->formationRepository->findAllOrderByTable($champ, $ordre, $table);
         } else {
-            $formations = $this->formationRepository->findAllOrderByEmpty($champ, $ordre);
+            $formations = $this->formationRepository->findAllOrderBy($champ, $ordre);
         }
         $categories = $this->categorieRepository->findAll();
         return $this->render($this->pagesFormations, [
@@ -80,10 +67,13 @@ class FormationsController extends AbstractController {
      * @return Response
      */
     public function findAllContain($champ, Request $request, $table = ""): Response {
-
-        $valeur = $request->get("recherche");
-        if ($table != "") {
-            $formations = $this->formationRepository->findByContainValue($champ, $valeur, $table);
+        if ($this->isCsrfTokenValid('filtre_' . $champ, $request->get('_token'))) {
+            $valeur = $request->get("recherche");
+            if ($table != "") {
+                $formations = $this->formationRepository->findByContainValueTable($champ, $valeur, $table);
+            } else {
+                $formations = $this->formationRepository->findByContainValue($champ, $valeur);
+            }
             $categories = $this->categorieRepository->findAll();
             return $this->render($this->pagesFormations, [
                         'formations' => $formations,
@@ -91,20 +81,26 @@ class FormationsController extends AbstractController {
                         'valeur' => $valeur,
                         'table' => $table
             ]);
-        } else {
-            if ($this->isCsrfTokenValid('filtre_' . $champ, $request->get('_token'))) {
-                $formations = $this->formationRepository->findByContainValueEmpty($champ, $valeur);
+        }return $this->redirectToRoute("formations");
+    }
 
-                $categories = $this->categorieRepository->findAll();
-                return $this->render($this->pagesFormations, [
-                            'formations' => $formations,
-                            'categories' => $categories,
-                            'valeur' => $valeur,
-                            'table' => $table
-                ]);
-            }
-            return $this->redirectToRoute("formations");
-        }
+    /**
+     * @Route("/formations/rechercher/{champ}/{table}", name="formations.findallcontaincategories")
+     * @param type $champ
+     * @param Request $request
+     * @param type $table
+     * @return Response
+     */
+    public function findAllContainCategories($champ, Request $request, $table): Response {
+        $valeur = $request->get("recherche");
+        $formations = $this->formationRepository->findByContainValueTable($champ, $valeur, $table);
+        $categories = $this->categorieRepository->findAll();
+        return $this->render($this->pagesFormations, [
+                    'formations' => $formations,
+                    'categories' => $categories,
+                    'valeur' => $valeur,
+                    'table' => $table
+        ]);
     }
 
     /**

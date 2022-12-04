@@ -19,30 +19,10 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminPlaylistsController extends AbstractController {
 
-    /**
-     * 
-     * @var type String
-     */
     private $pagePlaylistsAdmin = "admin/admin.playlists.html.twig";
-
-    /**
-     *
-     * @var type String
-     */
     private $redirectToAP = "admin.playlists";
-
-    /**
-     * 
-     * @var PlaylistRepository
-     */
     private $playlistRepository;
-
-    /**
-     * 
-     * @var CategorieRepository
-     */
     private $categorieRepository;
-    private $formationRepository;
 
     /**
      * Constructeur de la classe PlaylistController
@@ -101,12 +81,11 @@ class AdminPlaylistsController extends AbstractController {
         if ($this->isCsrfTokenValid('filtre_' . $champ, $request->get('_token'))) {
             $valeur = $request->get("recherche");
             if ($table != "") {
-                $playlists = $this->playlistRepository->findByContainValue($champ, $valeur, $table);
+                $playlists = $this->playlistRepository->findByContainValueTable($champ, $valeur, $table);
             } else {
-                $playlists = $this->playlistRepository->findByContainValueEmpty($champ, $valeur);
+                $playlists = $this->playlistRepository->findByContainValue($champ, $valeur);
             }
             $categories = $this->categorieRepository->findAll();
-
             return $this->render($this->pagePlaylistsAdmin, [
                         'playlists' => $playlists,
                         'categories' => $categories,
@@ -117,6 +96,25 @@ class AdminPlaylistsController extends AbstractController {
         return $this->redirectToRoute($this->redirectToAP);
     }
 
+    /**
+     * @Route("/admin/playlists/recherche/{champ}/{table}", name="admin.playlists.findallcontaincategories")
+     * @param type $champ
+     * @param Request $request
+     * @param type $table
+     * @return Response
+     */
+    public function findAllContainCategories($champ, Request $request, $table): Response {
+        $valeur = $request->get("recherche");
+        $playlists = $this->playlistRepository->findByContainValueTable($champ, $valeur, $table);
+        $categories = $this->categorieRepository->findAll();
+        return $this->render($this->pagePlaylistsAdmin, [
+                    'playlists' => $playlists,
+                    'categories' => $categories,
+                    'valeur' => $valeur,
+                    'table' => $table
+        ]);
+    }
+    
     /**
      * @Route("/admin/playlists/tri/{ordre}", name="admin.playlists.sortonnbformation")
      * @param type $ordre
@@ -178,4 +176,5 @@ class AdminPlaylistsController extends AbstractController {
                     'formPlaylist' => $formPlaylist->createView()
         ]);
     }
+
 }

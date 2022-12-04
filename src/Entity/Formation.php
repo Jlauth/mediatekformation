@@ -43,7 +43,7 @@ class Formation {
      * 
      * @ORM\Column(name="title", type="string")
      * @Assert\NotBlank()
-     * @Assert\Length(min=6, max=100)
+     * @Assert\Length(min=4, max=100)
      */
     private $title;
 
@@ -51,7 +51,7 @@ class Formation {
      * @var text $description
      * 
      * @ORM\Column(name="description", type="text", nullable=true)
-     * @Assert\Length(min=10, max=255)
+     * @Assert\Length(min=6, max=255)
      */
     private $description;
 
