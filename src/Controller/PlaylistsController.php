@@ -17,28 +17,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PlaylistsController extends AbstractController {
 
-    /**
-     * 
-     * @var type String
-     */
-    private $pagePlaylists = "pages/playlists.html.twig";
-
-    /**
-     * 
-     * @var PlaylistRepository
-     */
+    private $pagesPlaylists = "pages/playlists.html.twig";
     private $playlistRepository;
-
-    /**
-     * 
-     * @var CategorieRepository
-     */
     private $categorieRepository;
-
-    /**
-     * 
-     * @var FormationRepository
-     */
     private $formationRepository;
 
     /**
@@ -61,7 +42,7 @@ class PlaylistsController extends AbstractController {
     public function index(): Response {
         $playlists = $this->playlistRepository->findAllOrderByName('ASC');
         $categories = $this->categorieRepository->findAll();
-        return $this->render($this->pagePlaylists, [
+        return $this->render($this->pagesPlaylists, [
                     'playlists' => $playlists,
                     'categories' => $categories
         ]);
@@ -83,7 +64,7 @@ class PlaylistsController extends AbstractController {
                 break;
         }
         $categories = $this->categorieRepository->findAll();
-        return $this->render($this->pagePlaylists, [
+        return $this->render($this->pagesPlaylists, [
                     'playlists' => $playlists,
                     'categories' => $categories
         ]);
@@ -97,28 +78,40 @@ class PlaylistsController extends AbstractController {
      * @return Response
      */
     public function findAllContain($champ, Request $request, $table = ""): Response {
-        $valeur = $request->get("recherche");
-        if ($table != "") {
-            $playlists = $this->playlistRepository->findByContainValue($champ, $valeur, $table);
+        if ($this->isCsrfTokenValid('filtre_' . $champ, $request->get('_token'))) {
+            $valeur = $request->get("recherche");
+            if ($table != "") {
+                $playlists = $this->playlistRepository->findByContainValueTable($champ, $valeur, $table);
+            } else {
+                $playlists = $this->playlistRepository->findByContainValue($champ, $valeur);
+            }
             $categories = $this->categorieRepository->findAll();
-            return $this->render($this->pagePlaylists, [
+            return $this->render($this->pagesPlaylists, [
                         'playlists' => $playlists,
                         'categories' => $categories,
-                        'valeur' => $valeur,
-                        'table' => $table
+                        'table' => $table,
+                        'valeur' => $valeur
             ]);
-        } else {
-            if ($this->isCsrfTokenValid('filtre_' . $champ, $request->get('_token'))) {
-                $playlists = $this->playlistRepository->findByContainValue($champ, $valeur);
-                $categories = $this->categorieRepository->findAll();
-                return $this->render($this->pagePlaylists, [
-                            'playlists' => $playlists,
-                            'categories' => $categories,
-                            'valeur' => $valeur,
-                            'table' => $table
-                ]);
-            } return $this->redirectToRoute("playlists");
-        }
+        } return $this->redirectToRoute("playlists");
+    }
+
+    /**
+     * @Route("/playlists/recherche/{champ}/{table}", name="playlists.findallcontaincategories")
+     * @param type $champ
+     * @param Request $request
+     * @param type $table
+     * @return Response
+     */
+    public function findAllContainCategories($champ, Request $request, $table): Response {
+        $valeur = $request->get("recherche");
+        $playlists = $this->playlistRepository->findByContainValueTable($champ, $valeur, $table);
+        $categories = $this->categorieRepository->findAll();
+        return $this->render($this->pagePlaylists, [
+                    'playlists' => $playlists,
+                    'categories' => $categories,
+                    'valeur' => $valeur,
+                    'table' => $table
+        ]);
     }
 
     /**
@@ -145,9 +138,10 @@ class PlaylistsController extends AbstractController {
     public function sortOnNbFormation($ordre): Response {
         $playlists = $this->playlistRepository->findAllOrderByNbFormations($ordre);
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/playlists.html.twig", [
+        return $this->render($this->pagesPlaylists, [
                     'playlists' => $playlists,
                     'categories' => $categories
         ]);
     }
+
 }

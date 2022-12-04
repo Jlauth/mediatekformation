@@ -16,10 +16,6 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FormationRepository extends ServiceEntityRepository {
 
-    /**
-     * 
-     * @var type String
-     */
     private $publishedAt = 'f.publishedAt';
 
     /**
@@ -59,13 +55,12 @@ class FormationRepository extends ServiceEntityRepository {
     }
 
     /**
-     * Retourne toutes les formations triées sur un champ
+     * Tri d'un champ champ de la Formation
      * @param type $champ
      * @param type $ordre
-     * @param type $table si $champ dans une autre table
      * @return Formation[]
      */
-    public function findAllOrderByEmpty($champ, $ordre): array {
+    public function findAllOrderBy($champ, $ordre): array {
         return $this->createQueryBuilder('f')
                         ->orderBy('f.' . $champ, $ordre)
                         ->getQuery()
@@ -73,13 +68,13 @@ class FormationRepository extends ServiceEntityRepository {
     }
 
     /**
-     * Retourne toutes les informations triées sur un champ
+     * Tri d'un champ d'une autre table que Formation
      * @param type $champ
+     * @param type $table avec $champ dans une autre table
      * @param type $ordre
-     * @param type $table avec le champ présent dans la table
      * @return Formation[]
      */
-    public function findAllOrderBy($champ, $ordre, $table): array {
+    public function findAllOrderByTable($champ, $ordre, $table): array {
         return $this->createQueryBuilder('f')
                         ->join('f.' . $table, 't')
                         ->orderBy('t.' . $champ, $ordre)
@@ -87,25 +82,47 @@ class FormationRepository extends ServiceEntityRepository {
                         ->getResult();
     }
 
+    /**
+     * Enregistrements dont un champ contient une valeur
+     * ou tous les enregistrements si la valeur est vide dans Formation
+     * @param type $champ
+     * @param type $valeur
+     * @return Formation[]
+     */
+    public function findByContainValue($champ, $valeur): array {
+        if ($valeur == "") {
+            return $this->findAll();
+        } else {
+            return $this->createQueryBuilder('f')
+                            ->where('f.' . $champ . ' LIKE :valeur')
+                            ->orderBy($this->publishedAt, 'DESC')
+                            ->setParameter('valeur', '%' . $valeur . '%')
+                            ->getQuery()
+                            ->getResult();
+        }
+    }
 
     /**
      * Enregistrements dont un champ contient une valeur
-     * ou tous les enregistrements si la valeur est vide
+     * ou tous les enregistrements si la valeur est vide dans une autre table
      * @param type $champ
      * @param type $valeur
-     * @param type $table si $champ dans une autre table
+     * @param type $table avec $champ dans une autre table
      * @return Formation[]
      */
-    public function findByContainValueEmpty($champ, $valeur): array {
+    public function findByContainValueTable($champ, $valeur, $table): array {
         if ($valeur == "") {
             return $this->findAll();
+        } else {
+            return $this->createQueryBuilder('f')
+                            ->join('f.' . $table, 't')
+                            ->where('t.' . $champ . ' LIKE :valeur')
+                            ->orderBy($this->publishedAt, 'DESC')
+                            ->addOrderBy('f.id', 'DESC')
+                            ->setParameter('valeur', '%' . $valeur . '%')
+                            ->getQuery()
+                            ->getResult();
         }
-        return $this->createQueryBuilder('f')
-                        ->where('f.' . $champ . ' LIKE :valeur')
-                        ->orderBy($this->publishedAt, 'DESC')
-                        ->setParameter('valeur', '%' . $valeur . '%')
-                        ->getQuery()
-                        ->getResult();
     }
 
     /**
@@ -124,7 +141,7 @@ class FormationRepository extends ServiceEntityRepository {
     /**
      * Retourne la liste des formations d'une playlist
      * @param type $idPlaylist
-     * @return array
+     * @return Formation[]
      */
     public function findAllForOnePlaylist($idPlaylist): array {
         return $this->createQueryBuilder('f')

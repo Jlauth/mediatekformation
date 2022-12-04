@@ -12,12 +12,14 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PlaylistsControllerTest extends WebTestCase {
 
+    private $playlistPage = '/playlists';
+    private $playlistRecherche = '/playlists/recherche/{champ}/{table}';
     /**
      * Initialisation du client de test d'accès à la page playlists
      */
     public function testAccessPage() {
         $client = static::createClient();
-        $client->request('GET', '/playlists');
+        $client->request('GET', $this->playlistPage);
         /** @var type $response */
         $response = $client->getResponse();
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
@@ -28,7 +30,7 @@ class PlaylistsControllerTest extends WebTestCase {
      */
     public function testFiltrePlaylistName() {
         $client = static::createClient();
-        $client->request('GET', '/playlists/recherche/{champ}/{table}');
+        $client->request('GET', $this->playlistRecherche);
         $crawler = $client->submitForm('filtrer', [
             'recherche' => 'Cours'
         ]);
@@ -41,7 +43,7 @@ class PlaylistsControllerTest extends WebTestCase {
      */
     public function testFiltrePlaylistCategorie(){
         $client = static::createClient();
-        $client->request('GET', '/playlists/recherche/{champ}/{table}');
+        $client->request('GET', $this->playlistRecherche);
         $crawler = $client->submitForm('filtrer', [
             'recherche' => 'Android'
         ]);
@@ -54,7 +56,7 @@ class PlaylistsControllerTest extends WebTestCase {
      */
     public function testTriPlaylistNbFormations(){
         $client = static::createClient();
-        $client->request('GET', '/playlists/recherche/{champ}/{table}');
+        $client->request('GET', $this->playlistRecherche);
         $crawler = $client->submitForm('filtrer');
         $this->assertCount(81, $crawler->filter('h5'));
     }
@@ -64,7 +66,7 @@ class PlaylistsControllerTest extends WebTestCase {
      */
     public function testLinkPlaylist() {
         $client = static::createClient();
-        $client->request('GET', '/playlists');
+        $client->request('GET', $this->playlistPage);
         $client->clickLink('Voir détail');
         $response = $client->getResponse();
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());

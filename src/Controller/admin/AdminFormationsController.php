@@ -51,7 +51,7 @@ class AdminFormationsController extends AbstractController {
      * @return Response
      */
     public function index(): Response {
-        $formations = $this->formationRepository->findAllOrderByEmpty('title', 'ASC');
+        $formations = $this->formationRepository->findAll();
         $categories = $this->categorieRepository->findAll();
         return $this->render($this->pagesFormationsAdmin, [
                     'formations' => $formations,
@@ -68,9 +68,9 @@ class AdminFormationsController extends AbstractController {
      */
     public function sort($champ, $ordre, $table = ""): Response {
         if ($table != "") {
-            $formations = $this->formationRepository->findAllOrderBy($champ, $ordre, $table);
+            $formations = $this->formationRepository->findAllOrderByTable($champ, $ordre, $table);
         } else {
-            $formations = $this->formationRepository->findAllOrderByEmpty($champ, $ordre);
+            $formations = $this->formationRepository->findAllOrderBy($champ, $ordre);
         }
         $categories = $this->categorieRepository->findAll();
         return $this->render($this->pagesFormationsAdmin, [
@@ -90,9 +90,9 @@ class AdminFormationsController extends AbstractController {
         if ($this->isCsrfTokenValid('filtre_' . $champ, $request->get('_token'))) {
             $valeur = $request->get("recherche");
             if ($table != "") {
-                $formations = $this->formationRepository->findByContainValue($champ, $valeur, $table);
+                $formations = $this->formationRepository->findByContainValueTable($champ, $valeur, $table);
             } else {
-                $formations = $this->formationRepository->findByContainValueEmpty($champ, $valeur);
+                $formations = $this->formationRepository->findByContainValue($champ, $valeur);
             }
             $categories = $this->categorieRepository->findAll();
             return $this->render($this->pagesFormationsAdmin, [
@@ -103,6 +103,25 @@ class AdminFormationsController extends AbstractController {
             ]);
         }
         return $this->redirectToRoute($this->redirectToAF);
+    }
+    
+    /**
+     * @Route("/admin/formations/rechercher/{champ}/{table}", name="admin.formations.findallcontaincategories")
+     * @param type $champ
+     * @param Request $request
+     * @param type $table
+     * @return Response
+     */
+    public function findAllContainCategories($champ, Request $request, $table): Response {
+        $valeur = $request->get("recherche");
+        $formations = $this->formationRepository->findByContainValueTable($champ, $valeur, $table);
+        $categories = $this->categorieRepository->findAll();
+        return $this->render($this->pagesFormationsAdmin, [
+                    'formations' => $formations,
+                    'categories' => $categories,
+                    'valeur' => $valeur,
+                    'table' => $table
+        ]);
     }
 
     /**
