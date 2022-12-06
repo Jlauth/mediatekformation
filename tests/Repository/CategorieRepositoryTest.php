@@ -63,9 +63,12 @@ class CategorieRepositoryTest extends KernelTestCase {
      */
     public function testFindAllFOrOnePlaylist(){
         $repository = $this->getRepository();
-        $categories = $repository->findAllForOnePlaylist(2);
+        $categorie = $this->newCategorie();
+        $repository->add($categorie, true);
+        $categories = $repository->findAllForOnePlaylist(1);
         $nbCategories = count($categories);
         $this->assertEquals(2, $nbCategories);
+        $this->assertEquals("Java", $categories[0]->getName());
     }
     
     /**
@@ -73,9 +76,12 @@ class CategorieRepositoryTest extends KernelTestCase {
      */
     public function testFindAllOrderBy(){
         $repository = $this->getRepository();
-        $categories = $repository->findAllOrderBy("id", "DESC");
+        $categorie = $this->newCategorie();
+        $repository->add($categorie, true);
+        $categories = $repository->findAllOrderBy("name", "DESC");
         $nbCategories = count($categories);
-        $this->assertEquals(9, $nbCategories);
+        $this->assertEquals(10, $nbCategories);
+        $this->assertEquals("UML", $categories[0]->getName());
     }
 
 }

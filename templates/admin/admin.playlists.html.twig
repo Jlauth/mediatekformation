@@ -71,9 +71,10 @@
                     <td class="text-end">
                         {% if playlists[k].formations|length == 1 %}
                             <a href="{{ path('admin.playlist.suppr', {id:playlists[k].id}) }}" class="btn btn-danger" onclick="alert('Impossible de supprimer une playlist contenant {{playlists[k].formations|length}} formation');
-                                return false;">Supprimer</a>    
+                                    return false;">Supprimer</a>    
                         {% elseif playlists[k].formations|length > 1 %}
-                            <a href="{{ path('admin.playlist.suppr', {id:playlists[k].id}) }}" class="btn btn-danger" onclick="alert('Impossible de supprimer une playlist contenant {{playlists[k].formations|length}} formations'); return false;">Supprimer</a>
+                            <a href="{{ path('admin.playlist.suppr', {id:playlists[k].id}) }}" class="btn btn-danger" onclick="alert('Impossible de supprimer une playlist contenant {{playlists[k].formations|length}} formations');
+                                    return false;">Supprimer</a>
                         {% else %}
                             <a href="{{ path('admin.playlist.suppr', {id:playlists[k].id}) }}" class="btn btn-danger" onclick="return confirm('Supprimer {{playlists[k].name}} ?')">Supprimer</a>
                         {% endif %}
