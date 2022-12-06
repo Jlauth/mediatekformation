@@ -29,7 +29,7 @@ class FormationRepositoryTest extends KernelTestCase {
      */
     public function newFormation(): Formation {
         $formation = (new Formation())
-                ->setPublishedAt(new \DateTime("now"))
+                ->setPublishedAt(new \DateTime("04/01/2021"))
                 ->setTitle("Test d'intégration Formation")
                 ->setDescription("Je suis une description test du test d'intégration");
         return $formation;
@@ -61,14 +61,14 @@ class FormationRepositoryTest extends KernelTestCase {
     /**
      * Test sur la méthode findAllOrderByEmpty
      */
-    public function testFindAllOrderByEmpty() {
+    public function testFindAllOrderByTable() {
         $repository = $this->getRepository();
         $formation = $this->newFormation();
         $repository->add($formation, true);
-        /** @var type $formations */
-        $formations = $repository->findAllOrderByEmpty("title", "ASC");
+        $formations = $repository->findAllOrderByTable("name", "DESC", "categories");
         $nbFormations = count($formations);
-        $this->assertEquals(238, $nbFormations);
+        $this->assertEquals(224, $nbFormations);
+        $this->assertEquals("Cours UML (25 à 33 / 33) : exercices", $formations[5]->getTitle());
     }
 
     /**
@@ -78,10 +78,10 @@ class FormationRepositoryTest extends KernelTestCase {
         $repository = $this->getRepository();
         $formation = $this->newFormation();
         $repository->add($formation, true);
-        /** @var type $formations */
-        $formations = $repository->findAllOrderBy("name", "ASC", "categories");
+        $formations = $repository->findAllOrderBy("id", "ASC");
         $nbFormations = count($formations);
-        $this->assertEquals(224, $nbFormations);
+        $this->assertEquals(238, $nbFormations);
+        $this->assertEquals("Eclipse n°8 : Déploiement", $formations[0]->getTitle());
     }
 
     /**
@@ -91,10 +91,10 @@ class FormationRepositoryTest extends KernelTestCase {
         $repository = $this->getRepository();
         $formation = $this->newFormation();
         $repository->add($formation, true);
-        $formations = $repository->findByContainValueEmpty("title", "Test d'intégration Formation");
+        $formations = $repository->findByContainValue("title", "Eclipse n°8 : Déploiement");
         $nbFormations = count($formations);
         $this->assertEquals(1, $nbFormations);
-        $this->assertEquals("Test d'intégration Formation", $formations[0]->getTitle());
+        $this->assertEquals("Eclipse n°8 : Déploiement", $formations[0]->getTitle());
     }
     
     /**
@@ -102,9 +102,12 @@ class FormationRepositoryTest extends KernelTestCase {
      */
     public function testfindAllLast(){
         $repository = $this->getRepository();
+        $formation = $this->newFormation();
+        $repository->add($formation, true);
         $formations = $repository->findAllLasted(1);
         $nbFormations = count($formations);
         $this->assertEquals(1, $nbFormations);
+        $this->assertEquals(new \DateTime("04/01/2021"), $formations[0]->getPublishedAt());
     }
     
     /**
@@ -112,8 +115,11 @@ class FormationRepositoryTest extends KernelTestCase {
      */
     public function testFindAllForOnePlaylist(){
         $repository = $this->getRepository();
-        $formations = $repository->findAllForOnePlaylist(0);
+        $formation = $this->newFormation();
+        $repository->add($formation, true);
+        $formations = $repository->findAllForOnePlaylist(3);
         $nbFormations = count($formations);
-        $this->assertEquals(0, $nbFormations);
+        $this->assertEquals(19, $nbFormations);
+        $this->assertEquals("Python n°0 : installation de Python", $formations[0]->getTitle());
     }
 }

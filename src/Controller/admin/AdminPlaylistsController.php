@@ -5,6 +5,7 @@ namespace App\Controller\admin;
 use App\Entity\Formation;
 use App\Entity\Playlist;
 use App\Form\PlaylistType;
+use App\Form\PlaylistTypeAdd;
 use App\Repository\CategorieRepository;
 use App\Repository\PlaylistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -71,26 +72,20 @@ class AdminPlaylistsController extends AbstractController {
     }
 
     /**
-     * @Route("/admin/playlists/recherche/{champ}/{table}", name="admin.playlists.findallcontain")
+     * @Route("/admin/playlists/recherche/{champ}", name="admin.playlists.findallcontain")
      * @param type $champ
      * @param Request $request
-     * @param type $table
      * @return Response
      */
-    public function findAllContain($champ, Request $request, $table = ""): Response {
+    public function findAllContain($champ, Request $request): Response {
         if ($this->isCsrfTokenValid('filtre_' . $champ, $request->get('_token'))) {
             $valeur = $request->get("recherche");
-            if ($table != "") {
-                $playlists = $this->playlistRepository->findByContainValueTable($champ, $valeur, $table);
-            } else {
-                $playlists = $this->playlistRepository->findByContainValue($champ, $valeur);
-            }
+            $playlists = $this->playlistRepository->findByContainValue($champ, $valeur);
             $categories = $this->categorieRepository->findAll();
             return $this->render($this->pagePlaylistsAdmin, [
                         'playlists' => $playlists,
                         'categories' => $categories,
-                        'valeur' => $valeur,
-                        'table' => $table
+                        'valeur' => $valeur
             ]);
         }
         return $this->redirectToRoute($this->redirectToAP);
@@ -114,7 +109,7 @@ class AdminPlaylistsController extends AbstractController {
                     'table' => $table
         ]);
     }
-    
+
     /**
      * @Route("/admin/playlists/tri/{ordre}", name="admin.playlists.sortonnbformation")
      * @param type $ordre
@@ -132,7 +127,7 @@ class AdminPlaylistsController extends AbstractController {
     /**
      * @Route("/admin/playlists/suppr/{id}", name="admin.playlist.suppr")
      * @param Formation $playlist
-     * @return Reponse
+     * @return Response
      */
     public function suppr(Playlist $playlist): Response {
         $this->playlistRepository->remove($playlist, true);
@@ -143,7 +138,7 @@ class AdminPlaylistsController extends AbstractController {
      * @Route("/admin/playlists/edit/{id}", name="admin.playlist.edit")
      * @param Playlist $playlist
      * @param Request $request
-     * @return Reponse
+     * @return Response
      */
     public function edit(Playlist $playlist, Request $request): Response {
         $formPlaylist = $this->createForm(PlaylistType::class, $playlist);
@@ -161,7 +156,7 @@ class AdminPlaylistsController extends AbstractController {
     /**
      * @Route("/admin/playlists/ajout", name="admin.playlist.ajout")
      * @param Request $request
-     * @return Reponse
+     * @return Response
      */
     public function ajout(Request $request): Response {
         $playlist = new Playlist();

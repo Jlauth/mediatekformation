@@ -34,7 +34,6 @@ class FormationRepository extends ServiceEntityRepository {
      */
     public function add(Formation $entity, bool $flush = false): void {
         $this->getEntityManager()->persist($entity);
-
         if ($flush) {
             $this->getEntityManager()->flush();
         }
@@ -48,7 +47,6 @@ class FormationRepository extends ServiceEntityRepository {
      */
     public function remove(Formation $entity, bool $flush = false): void {
         $this->getEntityManager()->remove($entity);
-
         if ($flush) {
             $this->getEntityManager()->flush();
         }
@@ -70,8 +68,8 @@ class FormationRepository extends ServiceEntityRepository {
     /**
      * Tri d'un champ d'une autre table que Formation
      * @param type $champ
-     * @param type $table avec $champ dans une autre table
-     * @param type $ordre
+     * @param type $ordre avec $champ dans une autre table
+     * @param type $table
      * @return Formation[]
      */
     public function findAllOrderByTable($champ, $ordre, $table): array {

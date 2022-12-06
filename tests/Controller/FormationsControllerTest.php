@@ -34,7 +34,7 @@ class FormationsControllerTest extends WebTestCase {
             'recherche' => 'Android'
         ]);
         $this->assertSelectorTextContains('h5', 'Android');
-        $this->assertCount(64, $crawler->filter('h5'));
+        $this->assertCount(32, $crawler->filter('h5'));
     }
 
     /**
@@ -43,9 +43,9 @@ class FormationsControllerTest extends WebTestCase {
     public function testTriFormations() {
         $client = static::createClient();
         $crawler = $client->request('GET', $this->formationsPage);
-        $this->assertSelectorTextContains('h4', 'Formation');
-        $this->assertCount(239, $crawler->filter('h4'));
-        $this->assertSelectorTextContains('h5', 'Compléments Android (programmation mobile)');
+        $this->assertSelectorTextContains('th', 'Formation');
+        $this->assertCount(5, $crawler->filter('th'));
+        $this->assertSelectorTextContains('th', 'Compléments Android (programmation mobile)');
     }
     
     /**

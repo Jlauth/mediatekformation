@@ -18,35 +18,35 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @author Jean
  */
 class PlaylistType extends AbstractType {
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options): void {
-        
+
         $builder
-            ->add('name', TextType::class, [
-                'label' => 'Intitulé de la playlist',
-                'required' => true
-            ])
-            ->add('formations', EntityType::class, [
-                'class' => Formation::class,
-                'label' => 'Titre de la formation',
-                'choice_label' => 'title',
-                'multiple' => true,
-                'required' => false
-            ])
-            ->add('description', TextareaType::class, [
-                'label' => 'Description de la nouvelle playlist',
-                'required' => false
-            ])
+                ->add('name', TextType::class, [
+                    'label' => 'Intitulé de la playlist',
+                    'required' => true
+                ])
+                ->add('formations', EntityType::class, [
+                    'class' => Formation::class,
+                    'label' => 'Titre de la formation',
+                    'choice_label' => 'title',
+                    'multiple' => true,
+                    'disabled' => true
+                ])
+                ->add('description', TextareaType::class, [
+                    'label' => 'Description de la nouvelle playlist',
+                    'required' => false
+                ])
                 ->add('submit', SubmitType::class, [
-                'label' => 'Ajouter'
-            ])
+                    'label' => 'Ajouter'
+                ])
         ;
     }
-    
+
     public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => Playlist::class,
         ]);
     }
-    
+
 }

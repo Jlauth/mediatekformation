@@ -71,25 +71,19 @@ class PlaylistsController extends AbstractController {
     }
 
     /**
-     * @Route("/playlists/recherche/{champ}/{table}", name="playlists.findallcontain")
+     * @Route("/playlists/recherche/{champ}", name="playlists.findallcontain")
      * @param type $champ
      * @param Request $request
-     * @param type $table
      * @return Response
      */
-    public function findAllContain($champ, Request $request, $table = ""): Response {
+    public function findAllContain($champ, Request $request): Response {
         if ($this->isCsrfTokenValid('filtre_' . $champ, $request->get('_token'))) {
             $valeur = $request->get("recherche");
-            if ($table != "") {
-                $playlists = $this->playlistRepository->findByContainValueTable($champ, $valeur, $table);
-            } else {
-                $playlists = $this->playlistRepository->findByContainValue($champ, $valeur);
-            }
+            $playlists = $this->playlistRepository->findByContainValue($champ, $valeur);
             $categories = $this->categorieRepository->findAll();
             return $this->render($this->pagesPlaylists, [
                         'playlists' => $playlists,
                         'categories' => $categories,
-                        'table' => $table,
                         'valeur' => $valeur
             ]);
         } return $this->redirectToRoute("playlists");
@@ -106,7 +100,7 @@ class PlaylistsController extends AbstractController {
         $valeur = $request->get("recherche");
         $playlists = $this->playlistRepository->findByContainValueTable($champ, $valeur, $table);
         $categories = $this->categorieRepository->findAll();
-        return $this->render($this->pagePlaylists, [
+        return $this->render($this->pagesPlaylists, [
                     'playlists' => $playlists,
                     'categories' => $categories,
                     'valeur' => $valeur,
