@@ -1,7 +1,9 @@
 {% extends "baseadmin.html.twig" %}
 {% block title %}{% endblock  %}
 {% block body %}
+    {% form_theme formPlaylistAdd 'bootstrap_4_layout.html.twig' %}
     <br/>
     <h2 class='text-info'>Ajout d'une nouvelle playlist</h2>
-     {{ include ('_admin.playlist.form.html.twig') }}
+    {{ form_start(formPlaylistAdd) }}
+    {{ form_end(formPlaylistAdd) }}
 {% endblock %}
