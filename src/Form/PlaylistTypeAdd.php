@@ -2,9 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Formation;
 use App\Entity\Playlist;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -17,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @author Jean
  */
-class PlaylistType extends AbstractType {
+class PlaylistTypeAdd extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
@@ -25,19 +23,10 @@ class PlaylistType extends AbstractType {
                     'label' => 'Intitulé de la playlist',
                     'required' => true
                 ])
-                ->add('formations', EntityType::class, [
-                    'class' => Formation::class,
-                    'label' => 'Formation(s) liée(s) à la playlist',
-                    'choice_label' => 'title',
-                    'multiple' => true,
-                    'disabled' => true
-                ])
-                
                 ->add('description', TextareaType::class, [
                     'label' => 'Description de la nouvelle playlist',
                     'required' => false
                 ])
-               
                 ->add('submit', SubmitType::class, [
                     'label' => 'Ajouter'
                 ])

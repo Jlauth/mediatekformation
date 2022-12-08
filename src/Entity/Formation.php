@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 
 /**
@@ -41,9 +42,8 @@ class Formation {
     /**
      * @var string $title
      * 
-     * @ORM\Column(name="title", type="string")
-     * @Assert\NotBlank()
-     * @Assert\Length(min=4, max=100)
+     * @ORM\Column(name="title", type="string", nullable=false)
+     * @Assert\Length(min=4, max=30, minMessage="Minimum {{ limit }} caractères", maxMessage="Maximum {{ limit }} caractères.")
      */
     private $title;
 
@@ -166,5 +166,12 @@ class Formation {
 
         return $this;
     }
-
+    
+    /**
+     * @Assert\Callback
+     * @param ExecutionContextInterface $context
+     */
+    public function validate(ExecutionContextInterface $context){
+        
+    }
 }

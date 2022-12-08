@@ -160,15 +160,15 @@ class AdminPlaylistsController extends AbstractController {
      */
     public function ajout(Request $request): Response {
         $playlist = new Playlist();
-        $formPlaylist = $this->createForm(PlaylistType::class, $playlist);
-        $formPlaylist->handleRequest($request);
-        if ($formPlaylist->isSubmitted() && $formPlaylist->isValid()) {
+        $formPlaylistAdd = $this->createForm(PlaylistTypeAdd::class, $playlist);
+        $formPlaylistAdd->handleRequest($request);
+        if ($formPlaylistAdd->isSubmitted() && $formPlaylistAdd->isValid()) {
             $this->playlistRepository->add($playlist, true);
             return $this->redirectToRoute($this->redirectToAP);
         }
         return $this->render("admin/admin.playlist.ajout.html.twig", [
                     'playlist' => $playlist,
-                    'formPlaylist' => $formPlaylist->createView()
+                    'formPlaylistAdd' => $formPlaylistAdd->createView()
         ]);
     }
 

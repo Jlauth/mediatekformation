@@ -58,7 +58,7 @@ class FormationsControllerTest extends WebTestCase {
         $response = $client->getResponse();
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $uri = $client->getRequest()->server->get("REQUEST_URI");
-        $this->assertEquals('/formations/formation/89', $uri);
+        $this->assertEquals('/formations/formation/1', $uri);
     }
 }
 
