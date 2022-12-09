@@ -53,7 +53,8 @@ class FormationRepository extends ServiceEntityRepository {
     }
 
     /**
-     * Tri d'un champ champ de la Formation
+     * Retourne toutes les informations triées sur un champ
+     * Avec $champ présent dans Formation
      * @param type $champ
      * @param type $ordre
      * @return Formation[]
@@ -66,10 +67,11 @@ class FormationRepository extends ServiceEntityRepository {
     }
 
     /**
-     * Tri d'un champ d'une autre table que Formation
+     * Retourne toutes les informations triées sur un champ
+     * Avec $champ présent dans une autre entité
      * @param type $champ
-     * @param type $ordre avec $champ dans une autre table
-     * @param type $table
+     * @param type $ordre
+     * @param type $table la table correspondant au $champ recherché
      * @return Formation[]
      */
     public function findAllOrderByTable($champ, $ordre, $table): array {
@@ -81,8 +83,8 @@ class FormationRepository extends ServiceEntityRepository {
     }
 
     /**
-     * Enregistrements dont un champ contient une valeur
-     * ou tous les enregistrements si la valeur est vide dans Formation
+     * Retourne la valeur renseignée en fonction du champ
+     * Ou tous les enregistrements si valeur est null
      * @param type $champ
      * @param type $valeur
      * @return Formation[]
@@ -101,11 +103,12 @@ class FormationRepository extends ServiceEntityRepository {
     }
 
     /**
-     * Enregistrements dont un champ contient une valeur
-     * ou tous les enregistrements si la valeur est vide dans une autre table
+     * Retourne la valeur renseignée en fonction du champ
+     * Ou tous les enregistrements si la valeur est null
+     * Avec $champ présent dans une autre entité
      * @param type $champ
      * @param type $valeur
-     * @param type $table avec $champ dans une autre table
+     * @param type $table  la table correspondant au $champ recherché
      * @return Formation[]
      */
     public function findByContainValueTable($champ, $valeur, $table): array {
