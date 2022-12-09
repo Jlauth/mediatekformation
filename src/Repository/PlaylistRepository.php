@@ -71,7 +71,7 @@ class PlaylistRepository extends ServiceEntityRepository {
 
     /**
      * Enregistrements dont un champ contient une valeur
-     * ou tous les enregistrements si la valeur est vide dans Playlist
+     * Ou tous les enregistrements si la valeur est null
      * @param type $champ
      * @param type $valeur
      * @return Playlist[]
@@ -92,8 +92,9 @@ class PlaylistRepository extends ServiceEntityRepository {
     }
 
     /**
-     * Enregistrements dont un champ contient une valeur
-     * ou tous les enregistrements si la valeur est vide
+     * Retourne la valeur renseignée en fonction du champ
+     * Ou tous les enregistrements si la valeur est null
+     * Avec $champ présent dans une autre entité
      * @param type $champ
      * @param type $valeur
      * @param type $table si $champ dans une autre table
