@@ -43,6 +43,7 @@ class Formation {
      * @var string $title
      * 
      * @ORM\Column(name="title", type="string", nullable=false)
+     * @Assert\NotBlank()
      * @Assert\Length(min=4, max=30, minMessage="Minimum {{ limit }} caractères", maxMessage="Maximum {{ limit }} caractères.")
      */
     private $title;

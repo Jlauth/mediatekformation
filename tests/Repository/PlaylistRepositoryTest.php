@@ -77,7 +77,7 @@ class PlaylistRepositoryTest extends KernelTestCase {
         $repository = $this->getRepository();
         $playlist = $this->newPlaylist();
         $repository->add($playlist, true);
-        $playlists = $repository->findAllOrderByNbFormations("ASC");
+        $playlists = $repository->findAllOrderByNbFormation("ASC");
         $nbPlaylists = count($playlists);
         $this->assertEquals(28, $nbPlaylists);
         $this->assertEquals("Cours Merise/2", $playlists[2]->getName());

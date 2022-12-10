@@ -61,7 +61,7 @@ class AdminPlaylistsController extends AbstractController {
                 $playlists = $this->playlistRepository->findAllOrderByName($ordre);
                 break;
             case "nbformations":
-                $playlists = $this->playlistRepository->findAllOrderByNbFormations($ordre);
+                $playlists = $this->playlistRepository->findAllOrderByNbFormation($ordre);
                 break;
         }
         $categories = $this->categorieRepository->findAll();
@@ -116,7 +116,7 @@ class AdminPlaylistsController extends AbstractController {
      * @return Response
      */
     public function sortOnNbFormation($ordre): Response {
-        $playlists = $this->playlistRepository->findAllOrderByNbFormations($ordre);
+        $playlists = $this->playlistRepository->findAllOrderByNbFormation($ordre);
         $categories = $this->categorieRepository->findAll();
         return $this->render($this->pagePlaylistsAdmin, [
                     'playlists' => $playlists,

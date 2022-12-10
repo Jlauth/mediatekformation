@@ -78,10 +78,12 @@
                         {{ formation.publishedatstring }}
                     </td>
                     <td class="text-end">
-                        <a href="{{ path('admin.formation.edit', {id:formation.id}) }}" class="btn btn-secondary" onclick="return confirm('Modifier {{formation.title}} ?')">Modifier</a>
+                        <a href="{{ path('admin.formation.edit', {id:formation.id}) }}" class="btn btn-secondary" 
+                           onclick="return confirm('Modifier {{formation.title}} ?');">Modifier</a>
                     </td>
                     <td class="text-end">
-                        <a href="{{ path('admin.formation.suppr', {id:formation.id}) }}" class="btn btn-danger" onclick="return confirm('Supprimer {{formation.title}} ?')">Supprimer</a>
+                        <a href="{{ path('admin.formation.suppr', {id:formation.id}) }}" class="btn btn-danger" 
+                           onclick="return confirm('Supprimer {{formation.title}} ?');">Supprimer</a>
                     </td>
                 </tr>
             {% endfor %}

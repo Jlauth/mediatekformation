@@ -60,7 +60,7 @@ class PlaylistRepository extends ServiceEntityRepository {
      * @param type $ordre
      * @return Playlist[]
      */
-    public function findAllOrderByNbFormations($ordre): array {
+    public function findAllOrderByNbFormation($ordre): array {
         return $this->createQueryBuilder('p')
                         ->leftjoin($this->formations, 'f')
                         ->groupBy($this->idPlaylist)
