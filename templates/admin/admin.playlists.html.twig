@@ -66,17 +66,21 @@
                         {% endif %}
                     </td>        
                     <td class="text-end">
-                        <a href="{{ path('admin.playlist.edit', {id:playlists[k].id}) }}" class="btn btn-secondary" onclick="return confirm('Modifier {{playlists[k].name}} ?')">Modifier</a>
+                        <a href="{{ path('admin.playlist.edit', {id:playlists[k].id}) }}" class="btn btn-secondary" 
+                           onclick="return confirm('Modifier {{playlists[k].name}} ?')">Modifier</a>
                     </td>
                     <td class="text-end">
                         {% if playlists[k].formations|length == 1 %}
-                            <a href="{{ path('admin.playlist.suppr', {id:playlists[k].id}) }}" class="btn btn-danger" onclick="alert('Impossible de supprimer une playlist contenant {{playlists[k].formations|length}} formation');
+                            <a href="{{ path('admin.playlist.suppr', {id:playlists[k].id}) }}" class="btn btn-danger" 
+                               onclick="alert('Impossible de supprimer une playlist contenant {{playlists[k].formations|length}} formation');
                                     return false;">Supprimer</a>    
                         {% elseif playlists[k].formations|length > 1 %}
-                            <a href="{{ path('admin.playlist.suppr', {id:playlists[k].id}) }}" class="btn btn-danger" onclick="alert('Impossible de supprimer une playlist contenant {{playlists[k].formations|length}} formations');
+                            <a href="{{ path('admin.playlist.suppr', {id:playlists[k].id}) }}" class="btn btn-danger" 
+                               onclick="alert('Impossible de supprimer une playlist contenant {{playlists[k].formations|length}} formations');
                                     return false;">Supprimer</a>
                         {% else %}
-                            <a href="{{ path('admin.playlist.suppr', {id:playlists[k].id}) }}" class="btn btn-danger" onclick="return confirm('Supprimer {{playlists[k].name}} ?')">Supprimer</a>
+                            <a href="{{ path('admin.playlist.suppr', {id:playlists[k].id}) }}" class="btn btn-danger" 
+                               onclick="return confirm('Supprimer {{playlists[k].name}} ?')">Supprimer</a>
                         {% endif %}
                     </td>        
                 </tr>

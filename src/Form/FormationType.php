@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FormationType extends AbstractType {
 
     /**
-     * Création du formulaire
+     * Initialisation du formulaire
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -31,7 +31,8 @@ class FormationType extends AbstractType {
 
         $builder
                 ->add('title', TextType::class, [
-                    'label' => 'Intitulé de la nouvelle formation'
+                    'label' => 'Intitulé de la nouvelle formation',
+                    'required' => true
                 ])
                 ->add('playlist', EntityType::class, [
                     'class' => Playlist::class,
@@ -67,6 +68,6 @@ class FormationType extends AbstractType {
         $resolver->setDefaults([
             'data_class' => Formation::class,
         ]);
-   
     }
+
 }

@@ -59,19 +59,6 @@ class FormationRepositoryTest extends KernelTestCase {
     }
 
     /**
-     * Test sur la méthode findAllOrderByEmpty
-     */
-    public function testFindAllOrderByTable() {
-        $repository = $this->getRepository();
-        $formation = $this->newFormation();
-        $repository->add($formation, true);
-        $formations = $repository->findAllOrderByTable("name", "DESC", "categories");
-        $nbFormations = count($formations);
-        $this->assertEquals(224, $nbFormations);
-        $this->assertEquals("Cours UML (25 à 33 / 33) : exercices", $formations[5]->getTitle());
-    }
-
-    /**
      * Test sur la méthode findAllOrderBy
      */
     public function testFindAllOrderBy() {
@@ -83,24 +70,39 @@ class FormationRepositoryTest extends KernelTestCase {
         $this->assertEquals(238, $nbFormations);
         $this->assertEquals("Eclipse n°8 : Déploiement", $formations[0]->getTitle());
     }
-
+    
     /**
      * Test sur la méthode findByContainValueEmpty
      */
-    public function testfindByContainValueEmpty() {
+    public function testfindByContainValue() {
         $repository = $this->getRepository();
         $formation = $this->newFormation();
         $repository->add($formation, true);
-        $formations = $repository->findByContainValue("title", "Eclipse n°8 : Déploiement");
+        $formations = $repository->findByContainValue("title", "Eclipse");
         $nbFormations = count($formations);
-        $this->assertEquals(1, $nbFormations);
+        $this->assertEquals(9, $nbFormations);
         $this->assertEquals("Eclipse n°8 : Déploiement", $formations[0]->getTitle());
     }
     
     /**
+     * Test sur la méthode findAllOrderByEmpty
+     */
+    public function testFindAllOrderByTable() {
+        $repository = $this->getRepository();
+        $formation = $this->newFormation();
+        $repository->add($formation, true);
+        $formations = $repository->findAllOrderByTable("name", "DESC", "categories");
+        $nbFormations = count($formations);
+        $this->assertEquals(224, $nbFormations);
+        $this->assertEquals("Eclipse n°2 : rétroconception avec ObjectAid", $formations[0]->getTitle());
+    }
+
+    
+    
+    /**
      * Test sur la méthode findAllLast
      */
-    public function testfindAllLast(){
+    public function testfindAllLasted(){
         $repository = $this->getRepository();
         $formation = $this->newFormation();
         $repository->add($formation, true);
@@ -117,9 +119,9 @@ class FormationRepositoryTest extends KernelTestCase {
         $repository = $this->getRepository();
         $formation = $this->newFormation();
         $repository->add($formation, true);
-        $formations = $repository->findAllForOnePlaylist(3);
+        $formations = $repository->findAllForOnePlaylist(1);
         $nbFormations = count($formations);
-        $this->assertEquals(19, $nbFormations);
-        $this->assertEquals("Python n°0 : installation de Python", $formations[0]->getTitle());
+        $this->assertEquals(8, $nbFormations);
+        $this->assertEquals("Eclipse n°1 : installation de l'IDE", $formations[0]->getTitle());
     }
 }

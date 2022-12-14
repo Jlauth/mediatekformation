@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\Range;
 
 /**
  * @ORM\Table()
@@ -30,7 +29,7 @@ class Playlist
      * @var string $name
      * 
      * @ORM\Column(name="name", type="string", nullable=false, unique=true)
-     * @Assert\Length(min=4, max=20, minMessage="Minimum {{ limit }} caractères", maxMessage="Maximum {{ limit }} caractères. C'est déjà pas mal non?")
+     * @Assert\Length(min=4, max=30, minMessage="Minimum {{ limit }} caractères", maxMessage="Maximum {{ limit }} caractères.")
      */
     private $name;
 

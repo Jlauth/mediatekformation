@@ -39,6 +39,19 @@ class CategorieRepository extends ServiceEntityRepository
         }
     }
     
+     /**
+     * Tri sur un des champs de Catégorie
+     * @param type $champ
+     * @param type $ordre
+     * @return Categorie[]
+     */
+    public function findAllOrderBy($champ, $ordre): array{
+        return $this->createQueryBuilder('c')
+                ->orderBy('c.'.$champ, $ordre)
+                ->getQuery()
+                ->getResult();
+    }
+    
     /**
      * Retourne la liste des catégories des formations d'une playlist
      * @param type $idPlaylist
@@ -54,17 +67,4 @@ class CategorieRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();        
     }    
-    
-    /**
-     * Tri sur un des champs de Catégorie
-     * @param type $champ
-     * @param type $ordre
-     * @return Categorie[]
-     */
-    public function findAllOrderBy($champ, $ordre): array{
-        return $this->createQueryBuilder('c')
-                ->orderBy('c.'.$champ, $ordre)
-                ->getQuery()
-                ->getResult();
-    }
 }
