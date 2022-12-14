@@ -25,6 +25,21 @@ class FormationsControllerTest extends WebTestCase {
     }
 
     /**
+     * Test tri formation dans Formations
+     */
+    public function testTriFormations() {
+        $client = static::createClient();
+        $crawler = $client->request('GET', $this->formationsPage);
+        $response = $client->getResponse();
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $uri = $client->getRequest()->server->get("REQUEST_URI");
+        $this->assertEquals($this->formationsPage, $uri);
+        $this->assertSelectorTextContains('th', 'Formation');
+        $this->assertCount(237, $crawler->filter('h5'));
+        $this->assertSelectorTextContains('h5', 'Eclipse n°8 : Déploiement');
+    }
+    
+    /**
      * Test filtre formation title dans Formations
      */
     public function testFiltreFormations() {
@@ -37,17 +52,6 @@ class FormationsControllerTest extends WebTestCase {
         $this->assertCount(32, $crawler->filter('h5'));
     }
 
-    /**
-     * Test tri formation dans Formations
-     */
-    public function testTriFormations() {
-        $client = static::createClient();
-        $crawler = $client->request('GET', $this->formationsPage);
-        $this->assertSelectorTextContains('th', 'Formation');
-        $this->assertCount(5, $crawler->filter('th'));
-        $this->assertSelectorTextContains('th', 'Compléments Android (programmation mobile)');
-    }
-    
     /**
      * Test lien vers une formation dans Formations
      */

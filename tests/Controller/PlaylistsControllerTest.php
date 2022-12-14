@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 class PlaylistsControllerTest extends WebTestCase {
 
     private $playlistPage = '/playlists';
-    private $playlistRecherche = '/playlists/recherche/{champ}/{table}';
+    
     /**
      * Initialisation du client de test d'accès à la page playlists
      */
@@ -26,15 +26,31 @@ class PlaylistsControllerTest extends WebTestCase {
     }
 
     /**
+     * Test tri playlists dans Playlists
+     */
+    public function testTriPlaylistByName(){
+        $client = static::createClient();
+        $crawler = $client->request('GET', $this->playlistPage);
+        $response = $client->getResponse();
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $uri = $client->getRequest()->server->get("REQUEST_URI");
+        $this->assertEquals($this->playlistPage, $uri);
+        $this->assertSelectorTextContains('th', 'Playlist');
+        $this->assertCount(27, $crawler->filter('h5'));
+        $this->assertSelectorTextContains('h5', 'Bases de la programmation (C#)');
+    }
+   
+    
+    /**
      * Test filtre playlist name dans Playlists
      */
     public function testFiltrePlaylistName() {
         $client = static::createClient();
-        $client->request('GET', $this->playlistRecherche);
+        $client->request('GET', $this->playlistPage);
         $crawler = $client->submitForm('filtrer', [
             'recherche' => 'Cours'
         ]);
-        $this->assertCount(33, $crawler->filter('h5'));
+        $this->assertCount(11, $crawler->filter('h5'));
         $this->assertSelectorTextContains('h5', 'Cours');
     }
     
@@ -43,26 +59,17 @@ class PlaylistsControllerTest extends WebTestCase {
      */
     public function testFiltrePlaylistCategorie(){
         $client = static::createClient();
-        $client->request('GET', $this->playlistRecherche);
+        $client->request('GET', $this->playlistPage);
         $crawler = $client->submitForm('filtrer', [
             'recherche' => 'Android'
         ]);
-        $this->assertCount(6, $crawler->filter('h5'));
+        $this->assertCount(3, $crawler->filter('h5'));
         $this->assertSelectorTextContains('h5', 'Android');
     }
 
-    /**
-     * Test tri formation dans Playlists
-     */
-    public function testTriPlaylistNbFormations(){
-        $client = static::createClient();
-        $client->request('GET', $this->playlistRecherche);
-        $crawler = $client->submitForm('filtrer');
-        $this->assertCount(81, $crawler->filter('h5'));
-    }
     
     /**
-     * Test sur la réponse du clic bouton
+     * Test sur la réponse du clic bouton "Voir détail"
      */
     public function testLinkPlaylist() {
         $client = static::createClient();

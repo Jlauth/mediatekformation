@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Repository\CategorieRepository;
 use App\Repository\FormationRepository;
-use App\Repository\PlaylistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

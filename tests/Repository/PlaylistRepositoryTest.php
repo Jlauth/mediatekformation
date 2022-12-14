@@ -58,7 +58,7 @@ class PlaylistRepositoryTest extends KernelTestCase {
     }
 
     /**
-     * Test sur la méthode findAllOrderByName
+     * Test sur la fonction findAllOrderByName
      */
     public function testFindAllOderByName() {
         $repository = $this->getRepository();
@@ -71,20 +71,20 @@ class PlaylistRepositoryTest extends KernelTestCase {
     }
 
     /**
-     * Test sur la méthode findAllOrderByNbFormations
+     * Test sur la fonction findAllOrderByNbFormations
      */
     public function testFindAllOrderByNbFormations() {
         $repository = $this->getRepository();
         $playlist = $this->newPlaylist();
         $repository->add($playlist, true);
-        $playlists = $repository->findAllOrderByNbFormation("ASC");
+        $playlists = $repository->findAllOrderByNbFormation("DESC");
         $nbPlaylists = count($playlists);
         $this->assertEquals(28, $nbPlaylists);
-        $this->assertEquals("Cours Merise/2", $playlists[2]->getName());
+        $this->assertEquals("Bases de la programmation (C#)", $playlists[0]->getName());
     }
 
     /**
-     * Test sur la méthode findByContainValue
+     * Test sur la fonction findByContainValue
      */
     public function testFindByContainValue() {
         $repository = $this->getRepository();
@@ -94,5 +94,19 @@ class PlaylistRepositoryTest extends KernelTestCase {
         $nbPlaylists = count($playlists);
         $this->assertEquals(1, $nbPlaylists);
         $this->assertEquals("Eclipse et Java", $playlists[0]->getName());
+    }
+    
+    /**
+     * Test sur la fonction findByContainValueTable
+     */
+    public function testFindByContainValueTable() {
+        $repository = $this->getRepository();
+        $playlist = $this->newPlaylist();
+        $repository->add($playlist, true);
+        $playlists = $repository->findByContainValueTable("name", "Cours", "categories");
+        $nbPlaylists = count($playlists);
+        $this->assertEquals(11, $nbPlaylists);
+        $this->assertEquals("Cours Composant logiciel", $playlists[0]->getName());
+        
     }
 }

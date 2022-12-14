@@ -22,12 +22,12 @@ class CategorieRepositoryTest extends KernelTestCase {
         $repository = self::getContainer()->get(CategorieRepository::class);
         return $repository;
     }
-    
+
     /**
      * Création d'une instance de Playlist avec name et description
      * @return Categorie
      */
-    public function newCategorie() : Categorie{
+    public function newCategorie(): Categorie {
         $categorie = (new Categorie())
                 ->setName("Je suis une catégorie de test");
         return $categorie;
@@ -36,32 +36,43 @@ class CategorieRepositoryTest extends KernelTestCase {
     /**
      * Test sur l'ajout d'une categorie
      */
-    public function testAddCategorie(){
+    public function testAddCategorie() {
         $repository = $this->getRepository();
         $categorie = $this->newCategorie();
         $nbCategories = $repository->count([]);
         $repository->add($categorie, true);
-        $this->assertEquals($nbCategories +1, $repository->count([]), "Erreur lors de l'ajout");
+        $this->assertEquals($nbCategories + 1, $repository->count([]), "Erreur lors de l'ajout");
     }
-    
+
     /**
      * Test sur la suppression d'une categorie
      */
-    public function testRemoveCategorie(){
+    public function testRemoveCategorie() {
         $repository = $this->getRepository();
         $categorie = $this->newCategorie();
         $repository->add($categorie, true);
         $nbCategories = $repository->count([]);
         $repository->remove($categorie, true);
-        $this->assertEquals($nbCategories -1, $repository->count([]), "Erreur lors de la suppresion");
+        $this->assertEquals($nbCategories - 1, $repository->count([]), "Erreur lors de la suppresion");
     }
 
+    /**
+     * Test sur la méthode findAllOrderBy
+     */
+    public function testFindAllOrderBy() {
+        $repository = $this->getRepository();
+        $categorie = $this->newCategorie();
+        $repository->add($categorie, true);
+        $categories = $repository->findAllOrderBy("id", "DESC");
+        $nbCategories = count($categories);
+        $this->assertEquals(10, $nbCategories);
+        $this->assertEquals("Je suis une catégorie de test", $categories[0]->getName());
+    }
 
-    
     /**
      * Test sur la méthode findAllForOnePlaylist
      */
-    public function testFindAllFOrOnePlaylist(){
+    public function testFindAllFOrOnePlaylist() {
         $repository = $this->getRepository();
         $categorie = $this->newCategorie();
         $repository->add($categorie, true);
@@ -69,19 +80,6 @@ class CategorieRepositoryTest extends KernelTestCase {
         $nbCategories = count($categories);
         $this->assertEquals(2, $nbCategories);
         $this->assertEquals("Java", $categories[0]->getName());
-    }
-    
-    /**
-     * Test sur la méthode findAllOrderBy
-     */
-    public function testFindAllOrderBy(){
-        $repository = $this->getRepository();
-        $categorie = $this->newCategorie();
-        $repository->add($categorie, true);
-        $categories = $repository->findAllOrderBy("name", "DESC");
-        $nbCategories = count($categories);
-        $this->assertEquals(10, $nbCategories);
-        $this->assertEquals("UML", $categories[0]->getName());
     }
 
 }
