@@ -7,37 +7,40 @@ use App\Repository\PlaylistRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
- * Description of PlaylistRepositoryTest
+ * Description of PlaylistRepositoryTest.
  *
  * @author Jean
  */
-class PlaylistRepositoryTest extends KernelTestCase {
-
+class PlaylistRepositoryTest extends KernelTestCase
+{
     /**
-     * Récupération des méthodes de Playlist Repository
-     * @return PlaylistRepository
+     * Récupération des méthodes de Playlist Repository.
      */
-    protected function getRepository(): PlaylistRepository {
+    protected function getRepository(): PlaylistRepository
+    {
         self::bootKernel();
         $repository = self::getContainer()->get(PlaylistRepository::class);
+
         return $repository;
     }
 
     /**
-     * Création d'une instance de Playlist avec name et description
-     * @return Playlist
+     * Création d'une instance de Playlist avec name et description.
      */
-    public function newPlaylist(): Playlist {
+    public function newPlaylist(): Playlist
+    {
         $playlist = (new Playlist())
-                ->setName("Je suis une playlist de test")
+                ->setName('Je suis une playlist de test')
                 ->setDescription("Je suis la description d'une playlist de test");
+
         return $playlist;
     }
 
     /**
-     * Test sur l'ajout d'une playlist
+     * Test sur l'ajout d'une playlist.
      */
-    public function testAddPlaylist() {
+    public function testAddPlaylist()
+    {
         $repository = $this->getRepository();
         $playlist = $this->newPlaylist();
         $nbPlaylists = $repository->count([]);
@@ -46,67 +49,71 @@ class PlaylistRepositoryTest extends KernelTestCase {
     }
 
     /**
-     * Test sur la suppression d'une playlist
+     * Test sur la suppression d'une playlist.
      */
-    public function testRemovePlaylist() {
+    public function testRemovePlaylist()
+    {
         $repository = $this->getRepository();
         $playlist = $this->newPlaylist();
         $repository->add($playlist, true);
         $nbPlaylists = $repository->count([]);
         $repository->remove($playlist, true);
-        $this->assertEquals($nbPlaylists - 1, $repository->count([]), "Erreur lors de la suppresion");
+        $this->assertEquals($nbPlaylists - 1, $repository->count([]), 'Erreur lors de la suppresion');
     }
 
     /**
-     * Test sur la fonction findAllOrderByName
+     * Test sur la fonction findAllOrderByName.
      */
-    public function testFindAllOderByName() {
+    public function testFindAllOderByName()
+    {
         $repository = $this->getRepository();
         $playlist = $this->newPlaylist();
         $repository->add($playlist, true);
-        $playlists = $repository->findAllOrderByName("ASC");
+        $playlists = $repository->findAllOrderByName('ASC');
         $nbPlaylists = count($playlists);
         $this->assertEquals(28, $nbPlaylists);
-        $this->assertEquals("Cours Curseurs", $playlists[3]->getName());
+        $this->assertEquals('Cours Curseurs', $playlists[3]->getName());
     }
 
     /**
-     * Test sur la fonction findAllOrderByNbFormations
+     * Test sur la fonction findAllOrderByNbFormations.
      */
-    public function testFindAllOrderByNbFormations() {
+    public function testFindAllOrderByNbFormations()
+    {
         $repository = $this->getRepository();
         $playlist = $this->newPlaylist();
         $repository->add($playlist, true);
-        $playlists = $repository->findAllOrderByNbFormation("DESC");
+        $playlists = $repository->findAllOrderByNbFormation('DESC');
         $nbPlaylists = count($playlists);
         $this->assertEquals(28, $nbPlaylists);
-        $this->assertEquals("Bases de la programmation (C#)", $playlists[0]->getName());
+        $this->assertEquals('Bases de la programmation (C#)', $playlists[0]->getName());
     }
 
     /**
-     * Test sur la fonction findByContainValue
+     * Test sur la fonction findByContainValue.
      */
-    public function testFindByContainValue() {
+    public function testFindByContainValue()
+    {
         $repository = $this->getRepository();
         $playlist = $this->newPlaylist();
         $repository->add($playlist, true);
-        $playlists = $repository->findByContainValue("name", "Eclipse et Java");
+        $playlists = $repository->findByContainValue('name', 'Eclipse et Java');
         $nbPlaylists = count($playlists);
         $this->assertEquals(1, $nbPlaylists);
-        $this->assertEquals("Eclipse et Java", $playlists[0]->getName());
+        $this->assertEquals('Eclipse et Java', $playlists[0]->getName());
     }
-    
+
     /**
-     * Test sur la fonction findByContainValueTable
+     * Test sur la fonction findByContainValueTable.
      */
-    public function testFindByContainValueTable() {
+    public function testFindByContainValueTable()
+    {
         $repository = $this->getRepository();
         $playlist = $this->newPlaylist();
         $repository->add($playlist, true);
-        $playlists = $repository->findByContainValueTable("name", "Cours", "categories");
+        $playlists = $repository->findByContainValueTable('name', 'Cours', 'categories');
         $nbPlaylists = count($playlists);
         $this->assertEquals(11, $nbPlaylists);
-        $this->assertEquals("Cours Composant logiciel", $playlists[0]->getName());
-        
+        $this->assertEquals('Cours Composant logiciel', $playlists[0]->getName());
     }
 }

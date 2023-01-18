@@ -10,29 +10,29 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Description of CategorieType
+ * Class CategorieType.
  *
  * @author Jean
  */
-class CategorieType extends AbstractType {
-    
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-
+class CategorieType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder
                 ->add('name', TextType::class, [
                     'label' => 'Intitulé de la catégorie',
-                    'required' => true
+                    'required' => true,
                 ])
                 ->add('submit', SubmitType::class, [
-                    'label' => 'Ajouter'
+                    'label' => 'Ajouter',
                 ])
-        ;   
-    }
-    
-     public function configureOptions(OptionsResolver $resolver): void{
-        $resolver->setDefaults([
-            'data_class' => Categorie::class,
-        ]);
+        ;
     }
 
+     public function configureOptions(OptionsResolver $resolver): void
+     {
+         $resolver->setDefaults([
+             'data_class' => Categorie::class,
+         ]);
+     }
 }

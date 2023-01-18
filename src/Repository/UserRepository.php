@@ -10,6 +10,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
+ * Class UserRepository.
+ *
  * @extends ServiceEntityRepository<User>
  *
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
