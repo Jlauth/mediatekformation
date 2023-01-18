@@ -67,6 +67,9 @@
             "symfony/flex": true,
             "symfony/runtime": true
         },
+        "platform": {
+            "php": "7.3.29"
+        },
         "optimize-autoloader": true,
         "preferred-install": {
             "*": "dist"
@@ -90,6 +93,7 @@
     },
     "scripts": {
         "auto-scripts": {
+            "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
