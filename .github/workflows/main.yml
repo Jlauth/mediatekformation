@@ -12,6 +12,6 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@4.3.0
       with:
         server: node123-eu.n0c.com
-        server-dir: /public_html/mediatekformation/public/
+        server-dir: /public_html/mediatekformation/
         username: jlftp@jlmediatekformation.go.yj.fr
         password: ${{ secrets.ftp_password }}
