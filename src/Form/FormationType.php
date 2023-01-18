@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\Categorie;
 use App\Entity\Formation;
 use App\Entity\Playlist;
-use DateTime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -16,23 +15,21 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Description of FormationType
+ * Class FormationType.
  *
  * @author Jean
  */
-class FormationType extends AbstractType {
-
+class FormationType extends AbstractType
+{
     /**
-     * Initialisation du formulaire
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * Initialisation du formulaire.
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void {
-
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
         $builder
                 ->add('title', TextType::class, [
                     'label' => 'Intitulé de la nouvelle formation',
-                    'required' => true
+                    'required' => true,
                 ])
                 ->add('playlist', EntityType::class, [
                     'class' => Playlist::class,
@@ -45,29 +42,29 @@ class FormationType extends AbstractType {
                     'label' => 'Catégorie',
                     'choice_label' => 'name',
                     'multiple' => true,
-                    'required' => false
+                    'required' => false,
                 ])
                 ->add('publishedAt', DateType::class, [
                     'widget' => 'single_text',
-                    'data' => isset($options['data']) && $options['data']->getPublishedAt() != null ?
-                            $options['data']->getPublishedAt() : new DateTime('now'),
+                    'data' => isset($options['data']) && null != $options['data']->getPublishedAt() ?
+                            $options['data']->getPublishedAt() : new \DateTime('now'),
                     'label' => 'Date',
-                    'required' => true
+                    'required' => true,
                 ])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description de la nouvelle formation',
-                    'required' => false
+                    'required' => false,
                 ])
                 ->add('submit', SubmitType::class, [
-                    'label' => 'Ajouter'
+                    'label' => 'Ajouter',
                 ])
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void {
+    public function configureOptions(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
             'data_class' => Formation::class,
         ]);
     }
-
 }

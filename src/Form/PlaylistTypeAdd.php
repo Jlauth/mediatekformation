@@ -11,32 +11,33 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Description of PlaylistType
+ * Class PlaylistType.
  *
  * @author Jean
  */
-class PlaylistTypeAdd extends AbstractType {
-
-    public function buildForm(FormBuilderInterface $builder, array $options): void {
+class PlaylistTypeAdd extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
         $builder
                 ->add('name', TextType::class, [
                     'label' => 'Intitulé de la playlist',
-                    'required' => true
+                    'required' => true,
                 ])
                 ->add('description', TextareaType::class, [
                     'label' => 'Description de la nouvelle playlist',
-                    'required' => false
+                    'required' => false,
                 ])
                 ->add('submit', SubmitType::class, [
-                    'label' => 'Ajouter'
+                    'label' => 'Ajouter',
                 ])
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void {
+    public function configureOptions(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
             'data_class' => Playlist::class,
         ]);
     }
-
 }

@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Class CategorieRepository.
+ *
  * @extends ServiceEntityRepository<Categorie>
  *
  * @method Categorie|null find($id, $lockMode = null, $lockVersion = null)
@@ -38,33 +40,39 @@ class CategorieRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    
-     /**
-     * Tri sur un des champs de Catégorie
+
+    /**
+     * Tri sur un des champs de Catégorie.
+     *
      * @param type $champ
      * @param type $ordre
+     *
      * @return Categorie[]
      */
-    public function findAllOrderBy($champ, $ordre): array{
+    public function findAllOrderBy($champ, $ordre): array
+    {
         return $this->createQueryBuilder('c')
                 ->orderBy('c.'.$champ, $ordre)
                 ->getQuery()
                 ->getResult();
     }
-    
+
     /**
-     * Retourne la liste des catégories des formations d'une playlist
+     * Retourne la liste des catégories des formations d'une playlist.
+     *
      * @param type $idPlaylist
+     *
      * @return Categorie[]
      */
-    public function findAllForOnePlaylist($idPlaylist): array{
+    public function findAllForOnePlaylist($idPlaylist): array
+    {
         return $this->createQueryBuilder('c')
                 ->join('c.formations', 'f')
                 ->join('f.playlist', 'p')
                 ->where('p.id=:id')
                 ->setParameter('id', $idPlaylist)
-                ->orderBy('c.name', 'ASC')   
+                ->orderBy('c.name', 'ASC')
                 ->getQuery()
-                ->getResult();        
-    }    
+                ->getResult();
+    }
 }

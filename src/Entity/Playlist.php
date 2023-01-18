@@ -10,15 +10,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Class Playlist.
+ *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass=PlaylistRepository::class)
  * @UniqueEntity(fields="name", message="Ce nom de playlist existe déjà")
+ *
+ * @author Jean
  */
 class Playlist
 {
     /**
-     * @var integer $id
-     * 
+     * @var int
+     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(name="id", type="integer")
@@ -26,16 +30,16 @@ class Playlist
     private $id;
 
     /**
-     * @var string $name
-     * 
+     * @var string
+     *
      * @ORM\Column(name="name", type="string", nullable=false, unique=true)
      * @Assert\Length(min=4, max=30, minMessage="Minimum {{ limit }} caractères", maxMessage="Maximum {{ limit }} caractères.")
      */
     private $name;
 
     /**
-     * @var text $description
-     * 
+     * @var text
+     *
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
@@ -87,11 +91,6 @@ class Playlist
         return $this->formations;
     }
 
-    /**
-     * 
-     * @param Formation $formation
-     * @return self
-     */
     public function addFormation(Formation $formation): self
     {
         if (!$this->formations->contains($formation)) {
@@ -102,33 +101,30 @@ class Playlist
         return $this;
     }
 
-    /**
-     * 
-     * @param Formation $formation
-     * @return self
-     */
     public function removeFormation(Formation $formation): self
     {
-        if (($this->formations->removeElement($formation)) && ($formation->getPlaylist() === $this)) {
-                $formation->setPlaylist(null);
+        if ($this->formations->removeElement($formation) && ($formation->getPlaylist() === $this)) {
+            $formation->setPlaylist(null);
         }
+
         return $this;
     }
-    
-     /**
+
+    /**
      * @return Collection<int, string>
-     */	
-	public function getCategoriesPlaylist() : Collection
-	{
-            $categories = new ArrayCollection();
-            foreach($this->formations as $formation){
-                    $categoriesFormation = $formation->getCategories();
-                    foreach ($categoriesFormation as $categorieFormation) {
-                        if (!$categories->contains($categorieFormation->getName())) {
-                            $categories[] = $categorieFormation->getName();
-                        }
-                    }
+     */
+    public function getCategoriesPlaylist(): Collection
+    {
+        $categories = new ArrayCollection();
+        foreach ($this->formations as $formation) {
+            $categoriesFormation = $formation->getCategories();
+            foreach ($categoriesFormation as $categorieFormation) {
+                if (!$categories->contains($categorieFormation->getName())) {
+                    $categories[] = $categorieFormation->getName();
+                }
             }
-            return $categories;
-	}
+        }
+
+        return $categories;
+    }
 }

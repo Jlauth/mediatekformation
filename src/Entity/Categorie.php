@@ -7,9 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Class Categorie.
+ *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass=CategorieRepository::class)
  * @UniqueEntity(fields="name", message="Ce nom de catégorie existe déjà")
@@ -17,8 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Categorie
 {
     /**
-     * @var integer $id
-     * 
+     * @var int
+     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(name="id", type="integer")
@@ -26,8 +27,8 @@ class Categorie
     private $id;
 
     /**
-     * @var string $name
-     * 
+     * @var string
+     *
      * @ORM\Column(name="name", type="string", unique=true)
      */
     private $name;

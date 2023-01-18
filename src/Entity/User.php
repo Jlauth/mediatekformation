@@ -8,7 +8,11 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * Class User.
+ *
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ *
+ * @author Jean
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -31,6 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var string The hashed password
+     *
      * @ORM\Column(type="string")
      */
     private $password;

@@ -1,7 +1,7 @@
 {% extends "basefront.html.twig" %}
 
 {% block body %}
-    <p class="mt-3">
+<p class="mt-3">
     <h3>Bienvenue sur le site de MediaTek86 consacré aux formations en ligne</h3>
 </p>
 <p class="mt-3">
@@ -11,7 +11,7 @@
     En cliquant sur la capture, vous accèderez à la présentation plus détaillée de la formation ainsi que la vidéo correspondante.<BR />
     Vous pouvez aussi retrouver les vidéos regroupées dans des playlists, dans la partie <strong><a href="{{ path('playlists') }}" class="link-info">Playlists</a></strong>.
 </p>
-<p Voici les <strong>deux dernières formations</strong> ajoutées au catalogue :</p>
+<p>Les deux dernières formations ajoutées au catalogue :</p>
 <table class="table" description="deuxdernièresformations">
     <tr>
         {% for formation in formations %}
