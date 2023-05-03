@@ -11,7 +11,7 @@ jobs:
     - name: Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.0
       with:
-        server: node121-eu.n0c.com
+        server: node123-eu.n0c.com
         server-dir: /public_html/mediatekformation/
-        username:  admin@j-lauth.go.yj.fr
+        username: admin@j-lauth.go.yj.fr
         password: ${{ secrets.ftp_password }}
