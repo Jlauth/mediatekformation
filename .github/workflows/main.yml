@@ -13,5 +13,5 @@ jobs:
       with:
         server: node123-eu.n0c.com
         server-dir: /www/mediatekformation/
-        username: admin@jeanlauth.go.yj.fr
+        username: admin@j-lauth.go.yj.fr
         password: ${{ secrets.ftp_password }}
